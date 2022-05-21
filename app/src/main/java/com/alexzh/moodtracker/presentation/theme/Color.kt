@@ -1,4 +1,4 @@
-package com.alexzh.moodtracker.ui.theme
+package com.alexzh.moodtracker.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

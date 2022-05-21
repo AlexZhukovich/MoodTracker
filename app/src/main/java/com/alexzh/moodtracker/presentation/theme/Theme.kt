@@ -1,4 +1,4 @@
-package com.alexzh.moodtracker.ui.theme
+package com.alexzh.moodtracker.presentation.theme
 
 import android.app.Activity
 import android.os.Build
