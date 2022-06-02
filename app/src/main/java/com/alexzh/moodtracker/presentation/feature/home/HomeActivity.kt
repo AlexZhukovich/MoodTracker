@@ -4,12 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.ExperimentalComposeUiApi
 import com.alexzh.moodtracker.presentation.navigation.AppNavigation
 import com.alexzh.moodtracker.presentation.theme.AppTheme
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
+@ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 @ExperimentalMaterial3Api

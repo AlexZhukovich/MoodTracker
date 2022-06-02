@@ -20,7 +20,7 @@ fun Section(
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(8.dp)
             .animateContentSize()
     ) {
         Text(

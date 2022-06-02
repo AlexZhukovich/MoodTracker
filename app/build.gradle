@@ -1,6 +1,13 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.squareup.sqldelight'
+}
+
+sqldelight {
+    MoodTrackerDatabase {
+        packageName = "com.alexzh.moodtracker"
+    }
 }
 
 android {
@@ -57,9 +64,13 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
+    implementation "com.himanshoe:kalendar:$kalendar_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+    implementation "com.squareup.sqldelight:android-driver:$sqldelight_version"
+    implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sqldelight_version"
 
     testImplementation "junit:junit:$junit_version"
 
