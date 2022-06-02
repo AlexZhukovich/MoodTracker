@@ -1,7 +1,7 @@
 buildscript {
     ext {
         kotlin_version = '1.6.21'
-        grandle_plugin_version = '7.2.0'
+        grandle_plugin_version = '7.2.1'
         core_version = '1.7.0'
         lifecycle_version = '2.4.1'
         desugarJdkLibs_version = '1.1.5'
@@ -10,8 +10,8 @@ buildscript {
         sqldelight_version = '1.5.2'
 
         compose_activity_version = '1.4.0'
-        compose_version = '1.2.0-beta01'
-        compose_material3_version = '1.0.0-alpha11'
+        compose_version = '1.2.0-beta02'
+        compose_material3_version = '1.0.0-alpha12'
         accompanist_version = '0.24.9-beta'
         kalendar_version = '1.0.0-RC5'
 
