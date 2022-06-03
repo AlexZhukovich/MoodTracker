@@ -64,6 +64,7 @@ class TodayViewModel(
     ): List<MoodDataItem> {
         return data.map { item ->
             MoodDataItem(
+                id = item.id,
                 note = item.note,
                 iconId = emotionIconMapper.mapToEmotionItem(
                     EmotionEntity(

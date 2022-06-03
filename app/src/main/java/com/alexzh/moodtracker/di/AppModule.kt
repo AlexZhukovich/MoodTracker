@@ -23,7 +23,7 @@ val dataModule = module {
         AndroidSqliteDriver(
             schema = MoodTrackerDatabase.Schema,
             context = androidContext(),
-            name = "mood-tracker.db"
+            name = "data.db"
         )
     }
 
@@ -59,6 +59,7 @@ val appModule = module {
 
     viewModel {
         AddMoodViewModel(
+            get(),
             get(),
             get(),
             get(),

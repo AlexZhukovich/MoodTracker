@@ -8,5 +8,7 @@ interface EmotionHistoryWithActivityDataSource {
 
     fun getEmotionHistoryWithActivities(): Flow<List<EmotionHistoryWithActivities>>
 
+    fun getEmotionHistoryWithActivitiesById(emotionHistoryId: Long): EmotionHistoryWithActivities?
+
     fun getEmotionHistoryWithActivitiesByDate(startDate: ZonedDateTime, endDate: ZonedDateTime): Flow<List<EmotionHistoryWithActivities>>
 }

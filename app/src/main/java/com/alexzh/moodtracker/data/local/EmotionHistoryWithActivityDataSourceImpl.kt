@@ -16,6 +16,10 @@ class EmotionHistoryWithActivityDataSourceImpl(
         return queries.getEmotionHistoryWithActivities().asFlow().mapToList()
     }
 
+    override fun getEmotionHistoryWithActivitiesById(emotionHistoryId: Long): EmotionHistoryWithActivities? {
+        return queries.getEmotionHistoryWithActivitiesById(emotionHistoryId).executeAsOneOrNull()
+    }
+
     override fun getEmotionHistoryWithActivitiesByDate(
         startDate: ZonedDateTime,
         endDate: ZonedDateTime

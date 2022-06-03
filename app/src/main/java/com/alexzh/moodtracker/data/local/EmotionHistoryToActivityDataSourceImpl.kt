@@ -24,4 +24,13 @@ class EmotionHistoryToActivityDataSourceImpl(
             queries.delete(id)
         }
     }
+
+    override suspend fun deleteByEmotionHistoryIdAndActivityId(
+        emotionHistoryId: Long,
+        activityId: Long
+    ) {
+        withContext(Dispatchers.IO) {
+            queries.deleteByEmotionHistoryIdAndActivityId(emotionHistoryId, activityId)
+        }
+    }
 }

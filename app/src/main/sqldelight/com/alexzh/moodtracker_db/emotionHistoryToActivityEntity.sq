@@ -22,3 +22,7 @@ VALUES (?, ?, ?);
 delete:
 DELETE FROM emotionHistoryToActivityEntity
 WHERE id = :id;
+
+deleteByEmotionHistoryIdAndActivityId:
+DELETE FROM emotionHistoryToActivityEntity
+WHERE emotionHistoryId = :emotionHistoryId AND activityId = :activityId;

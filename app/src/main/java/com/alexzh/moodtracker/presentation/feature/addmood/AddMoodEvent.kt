@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 sealed class AddMoodEvent {
+    data class Load(val emotionHistoryId: Long): AddMoodEvent()
     data class OnEmotionChange(val emotionId: Long) : AddMoodEvent()
     data class OnActivityChange(val activityId: Long) : AddMoodEvent()
     data class OnNoteChange(val note: String): AddMoodEvent()

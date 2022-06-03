@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -31,6 +32,7 @@ import java.util.*
 @ExperimentalMaterial3Api
 @Composable
 fun AddMoodScreen(
+    emotionHistoryId: Long,
     viewModel: AddMoodViewModel,
     onBack: () -> Unit
 ) {
@@ -77,6 +79,10 @@ fun AddMoodScreen(
             }
         }
     )
+
+    LaunchedEffect(Unit) {
+        viewModel.onEvent(AddMoodEvent.Load(emotionHistoryId))
+    }
 }
 
 @Composable

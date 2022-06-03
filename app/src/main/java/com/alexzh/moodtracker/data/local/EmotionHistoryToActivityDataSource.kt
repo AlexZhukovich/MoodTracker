@@ -5,4 +5,6 @@ interface EmotionHistoryToActivityDataSource {
     suspend fun insertEmotionHistoryToActivity(emotionHistoryId: Long, activityId: Long, id: Long? = null)
 
     suspend fun deleteEmotionHistoryToActivity(id: Long)
+
+    suspend fun deleteByEmotionHistoryIdAndActivityId(emotionHistoryId: Long, activityId: Long)
 }

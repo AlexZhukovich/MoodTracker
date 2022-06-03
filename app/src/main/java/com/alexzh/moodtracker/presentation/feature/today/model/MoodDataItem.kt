@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import com.alexzh.moodtracker.presentation.core.ActivityItem
 
 data class MoodDataItem(
+    val id: Long,
     val note: String?,
     @DrawableRes val iconId: Int,
     val formattedDate: String,

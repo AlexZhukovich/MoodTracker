@@ -10,6 +10,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.alexzh.moodtracker.presentation.feature.addmood.AddMoodScreen
 import com.alexzh.moodtracker.presentation.feature.today.TodayScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -39,7 +41,7 @@ fun AppNavigation(navController: NavHostController) {
                 } else null
             },
             exitTransition = {
-                if (targetState.destination.route == Screens.AddMoodScreen.route) {
+                if (targetState.destination.route?.startsWith(Screens.AddMoodScreen.prefix) == true) {
                     slideOutOfContainer(
                         AnimatedContentScope.SlideDirection.Left,
                         animationSpec = tween(600)
@@ -49,11 +51,18 @@ fun AppNavigation(navController: NavHostController) {
         ) {
             TodayScreen(
                 viewModel = get(),
-                onAdd = { navController.navigate(Screens.AddMoodScreen.route) }
+                onAdd = { navController.navigate(Screens.AddMoodScreen.createRoute(-1L)) },
+                onEdit = { navController.navigate(Screens.AddMoodScreen.createRoute(it)) }
             )
         }
 
-        composable(Screens.AddMoodScreen.route,
+        composable(
+            route = Screens.AddMoodScreen.route,
+            arguments = listOf(
+                navArgument(Screens.AddMoodScreen.paramName) {
+                    type = NavType.LongType
+                }
+            ),
             enterTransition = {
                 if (initialState.destination.route == Screens.TodayScreen.route) slideIntoContainer(
                     AnimatedContentScope.SlideDirection.Left,
@@ -70,6 +79,7 @@ fun AppNavigation(navController: NavHostController) {
             }
         ) {
             AddMoodScreen(
+                emotionHistoryId = it.arguments?.getLong(Screens.AddMoodScreen.paramName) ?: -1,
                 viewModel = get(),
                 onBack = { navController.navigateUp() }
             )

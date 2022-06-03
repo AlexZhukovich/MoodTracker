@@ -19,6 +19,11 @@ getEmotionHistoryWithActivities:
 SELECT *
 FROM emotionHistoryWithActivities;
 
+getEmotionHistoryWithActivitiesById:
+SELECT *
+FROM emotionHistoryWithActivities
+WHERE id = :id;
+
 getEmotionHistoryWithActivitiesByDate:
 SELECT *
 FROM emotionHistoryWithActivities

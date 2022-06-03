@@ -1,6 +1,7 @@
 package com.alexzh.moodtracker.presentation.feature.today
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -29,7 +30,8 @@ import java.util.*
 @Composable
 fun TodayScreen(
     viewModel: TodayViewModel,
-    onAdd: () -> Unit
+    onAdd: () -> Unit,
+    onEdit: (Long) -> Unit
 ) {
     val uiState = viewModel.uiState.value
 
@@ -78,7 +80,7 @@ fun TodayScreen(
                         when {
                             uiState.isLoading -> LoadingScreen()
                             uiState.items.isEmpty() -> EmptyScreen()
-                            else -> SuccessScreen(uiState.items)
+                            else -> SuccessScreen(uiState.items, onEdit)
                         }
                     }
                 }
@@ -119,11 +121,14 @@ private fun EmptyScreen() {
 
 @ExperimentalMaterial3Api
 @Composable
-private fun SuccessScreen(items: List<MoodDataItem>) {
+private fun SuccessScreen(
+    items: List<MoodDataItem>,
+    onEdit: (Long) -> Unit,
+) {
     val lastIndex = items.lastIndex
     Column(modifier = Modifier.fillMaxWidth()) {
         items.forEachIndexed { index, item ->
-            MoodItem(item)
+            MoodItem(item, onEdit)
             if (index < lastIndex) {
                 Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
             }
@@ -134,9 +139,14 @@ private fun SuccessScreen(items: List<MoodDataItem>) {
 @ExperimentalMaterial3Api
 @Composable
 private fun MoodItem(
-    item: MoodDataItem
+    item: MoodDataItem,
+    onEdit: (Long) -> Unit
 ) {
-    Row(modifier = Modifier.padding(4.dp)) {
+    Row(
+        modifier = Modifier
+            .clickable { onEdit(item.id) }
+            .padding(4.dp)
+    ) {
         Icon(
             modifier = Modifier.size(64.dp),
             painter = painterResource(item.iconId),
