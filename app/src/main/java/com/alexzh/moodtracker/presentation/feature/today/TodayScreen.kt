@@ -41,7 +41,9 @@ fun TodayScreen(
             Kalendar(
                 kalendarStyle = KalendarStyle(
                     kalendarBackgroundColor = MaterialTheme.colorScheme.surface,
+                    kalendarColor = MaterialTheme.colorScheme.surface,
                     kalendarSelector = KalendarSelector.Rounded(
+                        defaultColor = MaterialTheme.colorScheme.surface,
                         selectedColor = MaterialTheme.colorScheme.inversePrimary,
                         todayColor = MaterialTheme.colorScheme.primaryContainer
                     )
