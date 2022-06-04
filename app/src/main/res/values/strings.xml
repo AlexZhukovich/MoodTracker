@@ -11,6 +11,7 @@
 
     <!-- Add mood -->
     <string name="addMoodScreen_title">How are you?</string>
+    <string name="addMoodScreen_delete_contentDescription">Delete</string>
     <string name="addMoodScreen_date_label">Date</string>
     <string name="addMoodScreen_time_label">Time</string>
     <string name="addMoodScreen_note_label">Note</string>

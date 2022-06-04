@@ -37,6 +37,7 @@ class AddMoodViewModel(
             is AddMoodEvent.OnTimeChange -> onTimeChange(event.time)
             is AddMoodEvent.OnActivityChange -> onActivityChange(event.activityId)
             is AddMoodEvent.OnNoteChange -> onNodeChange(event.note)
+            is AddMoodEvent.Delete -> delete()
             is AddMoodEvent.Save -> save()
         }
     }
@@ -111,6 +112,27 @@ class AddMoodViewModel(
 
     private fun onNodeChange(note: String) {
         _state.value = _state.value.copy(note = note)
+    }
+
+    private fun delete() {
+        // TODO: THINK WHAT DO DO WITH IT - HOW TO DIFFERENTIATE LOADING - SAVING - DELETEING
+        _state.value = _state.value.copy(isLoading = true)
+        viewModelScope.launch {
+            // TODO: DELETE IN ONE TRANSACTION
+            existingEntity?.let { entity ->
+                val activitiesToDelete = existingEntity?.activityIds?.split(",") ?: emptyList()
+                activitiesToDelete.forEach {
+                    emotionHistoryToActivityDataSource.deleteByEmotionHistoryIdAndActivityId(
+                        entity.id,
+                        it.toLong()
+                    )
+                }
+
+                emotionHistoryDataSource.deleteEmotionHistory(entity.id)
+            }
+            // TODO: I NEED TO USE ANOTHER STATE PROP INSTEAD OF "isSaved"
+            _state.value = _state.value.copy(isLoading = false, isSaved = true)
+        }
     }
 
     private fun save() {

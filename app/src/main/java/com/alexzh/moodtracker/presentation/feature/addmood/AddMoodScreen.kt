@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,11 +52,23 @@ fun AddMoodScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
-                            Icons.Filled.ArrowBack,
+                            imageVector = Icons.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.navigation_back_contentDescription)
                         )
                     }
                 },
+                actions = {
+                    if (emotionHistoryId != -1L) {
+                        IconButton(
+                            onClick = { viewModel.onEvent(AddMoodEvent.Delete) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = stringResource(R.string.addMoodScreen_delete_contentDescription)
+                            )
+                        }
+                    }
+                }
             )
         },
         snackbarHost = {

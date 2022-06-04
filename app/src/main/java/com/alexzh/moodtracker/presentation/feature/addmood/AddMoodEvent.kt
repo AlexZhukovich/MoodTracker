@@ -10,5 +10,6 @@ sealed class AddMoodEvent {
     data class OnNoteChange(val note: String): AddMoodEvent()
     data class OnDateChange(val date: LocalDate): AddMoodEvent()
     data class OnTimeChange(val time: LocalTime): AddMoodEvent()
+    object Delete: AddMoodEvent()
     object Save : AddMoodEvent()
 }
