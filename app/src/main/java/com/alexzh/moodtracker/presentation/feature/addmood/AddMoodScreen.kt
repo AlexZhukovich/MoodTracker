@@ -1,6 +1,7 @@
 package com.alexzh.moodtracker.presentation.feature.addmood
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -19,6 +21,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -26,6 +29,7 @@ import com.alexzh.moodtracker.R
 import com.alexzh.moodtracker.presentation.component.OutlineDatePicker
 import com.alexzh.moodtracker.presentation.component.OutlineTimePicker
 import com.google.accompanist.flowlayout.FlowRow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -110,15 +114,17 @@ private fun LoadedSuccessfullyScreen(
 
     val selectedEmotion = state.emotions.firstOrNull { it.isSelected }
     val errorMessage = stringResource(R.string.addMoodScreen_error_selectEmotionAndActivity)
+    val listState = rememberLazyListState()
 
     LazyColumn(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxSize()
             .padding(
                 start = 0.dp,
                 top = paddingValues.calculateTopPadding(),
                 end = 0.dp,
                 bottom = paddingValues.calculateBottomPadding()
-            )
+            ),
+        state = listState
     ) {
 
         item {
@@ -163,7 +169,10 @@ private fun LoadedSuccessfullyScreen(
         }
 
         item {
-            AnimatedVisibility(visible = selectedEmotion != null) {
+            AnimatedVisibility(
+                visible = selectedEmotion != null,
+                enter = fadeIn()
+            ) {
                 FlowRow(
                     modifier = Modifier.fillMaxWidth()
                         .padding(8.dp),
@@ -205,9 +214,22 @@ private fun LoadedSuccessfullyScreen(
         }
 
         item {
-            AnimatedVisibility(visible = selectedEmotion != null) {
+            AnimatedVisibility(
+                visible = selectedEmotion != null,
+                enter = fadeIn()
+            ) {
                 OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp),
+                    modifier = Modifier.fillMaxWidth().padding(8.dp)
+                        .onFocusEvent {
+                            if (it.isFocused) {
+
+                                scope.launch {
+                                    delay(200)
+                                    listState.animateScrollToItem(3)
+
+                                }
+                            }
+                        },
                     value = state.note,
                     onValueChange = { viewModel.onEvent(AddMoodEvent.OnNoteChange(it)) },
                     label = { Text(stringResource(R.string.addMoodScreen_note_label)) }
@@ -216,7 +238,10 @@ private fun LoadedSuccessfullyScreen(
         }
 
         item {
-            AnimatedVisibility(visible = selectedEmotion != null) {
+            AnimatedVisibility(
+                visible = selectedEmotion != null,
+                enter = fadeIn()
+            ) {
                 Button(
                     modifier = Modifier.fillMaxWidth().padding(8.dp),
                     onClick = {
