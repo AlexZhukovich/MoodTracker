@@ -1,6 +1,8 @@
 package com.alexzh.moodtracker.di
 
 import com.alexzh.moodtracker.MoodTrackerDatabase
+import com.alexzh.moodtracker.data.DefaultEmotionHistoryRepository
+import com.alexzh.moodtracker.data.EmotionHistoryRepository
 import com.alexzh.moodtracker.data.local.*
 import com.alexzh.moodtracker.data.local.adapter.zonedDateTimeAdapter
 import com.alexzh.moodtracker.presentation.core.date.DefaultTimeFormatter
@@ -36,11 +38,7 @@ val dataModule = module {
         )
     }
 
-    single<ActivityDataSource> { ActivityDataSourceImpl(get()) }
-    single<EmotionDataSource> { EmotionDataSourceImpl(get()) }
-    single<EmotionHistoryDataSource> { EmotionHistoryDataSourceImpl(get()) }
-    single<EmotionHistoryToActivityDataSource> { EmotionHistoryToActivityDataSourceImpl(get()) }
-    single<EmotionHistoryWithActivityDataSource> { EmotionHistoryWithActivityDataSourceImpl(get()) }
+    factory<EmotionHistoryRepository> { DefaultEmotionHistoryRepository(get()) }
 }
 
 val appModule = module {
@@ -52,17 +50,12 @@ val appModule = module {
         TodayViewModel(
             get(),
             get(),
-            get(),
             get()
         )
     }
 
     viewModel {
         AddMoodViewModel(
-            get(),
-            get(),
-            get(),
-            get(),
             get(),
             get(),
             get()

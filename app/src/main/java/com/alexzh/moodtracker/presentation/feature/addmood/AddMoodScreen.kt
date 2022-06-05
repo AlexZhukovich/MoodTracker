@@ -82,9 +82,21 @@ fun AddMoodScreen(
             val uiState = viewModel.state.value
 
             when {
-                uiState.isLoading -> LoadingScreen(paddingValues)
-                uiState.isSaving -> SavingScreen(paddingValues)
-                uiState.isSaved -> onBack()
+                uiState.loading != AddMoodScreenLoading.NONE -> {
+                    when (uiState.loading) {
+                        AddMoodScreenLoading.LOADING,
+                        AddMoodScreenLoading.SAVING,
+                        AddMoodScreenLoading.DELETING -> LoadingScreen(paddingValues)
+                        else -> { /* Already covered in previous when operator */ }
+                    }
+                }
+                uiState.completedOperation != AddMoodScreenCompletedOperation.NONE -> {
+                    when (uiState.completedOperation) {
+                        AddMoodScreenCompletedOperation.SAVED,
+                        AddMoodScreenCompletedOperation.DELETED -> onBack()
+                        else -> { /* Already covered in previous when operator */ }
+                    }
+                }
                 else -> {
                     LoadedSuccessfullyScreen(
                         paddingValues,
@@ -99,19 +111,6 @@ fun AddMoodScreen(
 
     LaunchedEffect(Unit) {
         viewModel.onEvent(AddMoodEvent.Load(emotionHistoryId))
-    }
-}
-
-@Composable
-private fun LoadingScreen(
-    paddingValues: PaddingValues
-) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-            .padding(paddingValues),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
     }
 }
 
@@ -276,7 +275,7 @@ private fun LoadedSuccessfullyScreen(
 }
 
 @Composable
-private fun SavingScreen(
+private fun LoadingScreen(
     paddingValues: PaddingValues
 ) {
     Box(

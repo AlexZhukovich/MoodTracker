@@ -2,29 +2,29 @@ package com.alexzh.moodtracker.presentation.core.icon
 
 import androidx.annotation.DrawableRes
 import com.alexzh.moodtracker.R
+import com.alexzh.moodtracker.data.model.Activity
 import com.alexzh.moodtracker.presentation.core.ActivityItem
 import com.alexzh.moodtracker.presentation.core.SelectableActivityItem
-import com.alexzh.moodtrackerdb.ActivityEntity
 
 class DefaultActivityIconMapper : ActivityIconMapper {
 
     override fun mapToActivityItem(
-        activityEntity: ActivityEntity,
+        activity: Activity,
         fallbackIcon: Int,
     ) = ActivityItem(
-        id = activityEntity.id,
-        name = activityEntity.name,
-        icon = mapIcon(activityEntity.icon, fallbackIcon)
+        id = activity.id,
+        name = activity.name,
+        icon = mapIcon(activity.icon, fallbackIcon)
     )
 
     override fun mapToSelectableActivityItem(
-        activityEntity: ActivityEntity,
+        activity: Activity,
         fallbackIcon: Int,
         isSelected: Boolean
     ) = SelectableActivityItem(
-        id = activityEntity.id,
-        name = activityEntity.name,
-        icon = mapIcon(activityEntity.icon, fallbackIcon),
+        id = activity.id,
+        name = activity.name,
+        icon = mapIcon(activity.icon, fallbackIcon),
         isSelected = isSelected
     )
 

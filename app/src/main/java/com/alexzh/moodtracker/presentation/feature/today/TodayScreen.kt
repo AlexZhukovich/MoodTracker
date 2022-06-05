@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alexzh.moodtracker.R
 import com.alexzh.moodtracker.presentation.component.Section
-import com.alexzh.moodtracker.presentation.feature.today.model.MoodDataItem
+import com.alexzh.moodtracker.presentation.feature.today.model.EmotionHistoryItem
 import com.google.accompanist.flowlayout.FlowRow
 import com.himanshoe.kalendar.common.KalendarSelector
 import com.himanshoe.kalendar.common.KalendarStyle
@@ -124,13 +124,13 @@ private fun EmptyScreen() {
 @ExperimentalMaterial3Api
 @Composable
 private fun SuccessScreen(
-    items: List<MoodDataItem>,
+    items: List<EmotionHistoryItem>,
     onEdit: (Long) -> Unit,
 ) {
     val lastIndex = items.lastIndex
     Column(modifier = Modifier.fillMaxWidth()) {
         items.forEachIndexed { index, item ->
-            MoodItem(item, onEdit)
+            EmotionHistoryItem(item, onEdit)
             if (index < lastIndex) {
                 Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
             }
@@ -140,8 +140,8 @@ private fun SuccessScreen(
 
 @ExperimentalMaterial3Api
 @Composable
-private fun MoodItem(
-    item: MoodDataItem,
+private fun EmotionHistoryItem(
+    item: EmotionHistoryItem,
     onEdit: (Long) -> Unit
 ) {
     Row(

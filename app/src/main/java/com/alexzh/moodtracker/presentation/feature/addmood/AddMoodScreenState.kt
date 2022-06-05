@@ -5,10 +5,22 @@ import com.alexzh.moodtracker.presentation.core.SelectableEmotionItem
 import java.time.LocalDate
 import java.time.LocalTime
 
+enum class AddMoodScreenLoading {
+    LOADING,
+    SAVING,
+    DELETING,
+    NONE
+}
+
+enum class AddMoodScreenCompletedOperation {
+    SAVED,
+    DELETED,
+    NONE
+}
+
 data class AddMoodScreenState(
-    val isLoading: Boolean = false,
-    val isSaving: Boolean = false,
-    val isSaved: Boolean = false,
+    val loading: AddMoodScreenLoading = AddMoodScreenLoading.NONE,
+    val completedOperation: AddMoodScreenCompletedOperation = AddMoodScreenCompletedOperation.NONE,
     val emotions: List<SelectableEmotionItem> = emptyList(),
     val date: LocalDate = LocalDate.now(),
     val time: LocalTime = LocalTime.now(),

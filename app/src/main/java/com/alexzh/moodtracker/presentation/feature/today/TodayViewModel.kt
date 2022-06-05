@@ -5,15 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexzh.moodtracker.R
-import com.alexzh.moodtracker.data.local.ActivityDataSource
-import com.alexzh.moodtracker.data.local.EmotionHistoryWithActivityDataSource
+import com.alexzh.moodtracker.data.EmotionHistoryRepository
 import com.alexzh.moodtracker.data.local.adapter.DATE_TIME_ZONE_UTC
+import com.alexzh.moodtracker.data.model.EmotionHistory
+import com.alexzh.moodtracker.data.util.Result
 import com.alexzh.moodtracker.presentation.core.icon.ActivityIconMapper
 import com.alexzh.moodtracker.presentation.core.icon.EmotionIconMapper
-import com.alexzh.moodtracker.presentation.feature.today.model.MoodDataItem
-import com.alexzh.moodtrackerdb.ActivityEntity
-import com.alexzh.moodtrackerdb.EmotionEntity
-import com.alexzh.moodtrackerdb.EmotionHistoryWithActivities
+import com.alexzh.moodtracker.presentation.feature.today.model.EmotionHistoryItem
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
@@ -21,8 +19,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 class TodayViewModel(
-    private val activityDataSource: ActivityDataSource,
-    private val emotionHistoryWithActivityDataSource: EmotionHistoryWithActivityDataSource,
+    private val emotionHistoryRepository: EmotionHistoryRepository,
     private val emotionIconMapper: EmotionIconMapper,
     private val activityIconMapper: ActivityIconMapper,
 ) : ViewModel() {
@@ -43,44 +40,38 @@ class TodayViewModel(
     private fun fetchMoodHistory(date: LocalDate) {
         _uiState.value = _uiState.value.copy(isLoading = true, items = emptyList())
         viewModelScope.launch {
-            launch {
-                val startDate = ZonedDateTime.of(date, LocalTime.of(0,0), DATE_TIME_ZONE_UTC)
-                val endDate = ZonedDateTime.of(date, LocalTime.of(23,59), DATE_TIME_ZONE_UTC)
-
-                val activities = activityDataSource.getActivities()
-                emotionHistoryWithActivityDataSource.getEmotionHistoryWithActivitiesByDate(startDate, endDate).collect {
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        items = mapToMoodDataItem(it, activities)
-                    )
+            val startDate = ZonedDateTime.of(date, LocalTime.of(0,0), DATE_TIME_ZONE_UTC)
+            val endDate = ZonedDateTime.of(date, LocalTime.of(23,59), DATE_TIME_ZONE_UTC)
+            emotionHistoryRepository.getEmotionsHistoryByDate(startDate, endDate).collect { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        _uiState.value = _uiState.value.copy(isLoading = true)
+                    }
+                    is Result.Success -> {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            items = mapToEmotionHistoryItem(result.data)
+                        )
+                    }
+                    is Result.Error -> {
+                        // TODO: IMPLEMENT IT
+                    }
                 }
             }
         }
     }
 
-    private fun mapToMoodDataItem(
-        data: List<EmotionHistoryWithActivities>,
-        activities: List<ActivityEntity>
-    ): List<MoodDataItem> {
+    private fun mapToEmotionHistoryItem(
+        data: List<EmotionHistory>
+    ): List<EmotionHistoryItem> {
         return data.map { item ->
-            MoodDataItem(
+            EmotionHistoryItem(
                 id = item.id,
                 note = item.note,
-                iconId = emotionIconMapper.mapToEmotionItem(
-                    EmotionEntity(
-                        item.emotionId,
-                        item.emotionName,
-                        item.emotionHappinessLevel,
-                        item.emotionIcon
-                    ),
-                    R.drawable.ic_question_mark
-                ).iconRes,
+                iconId = emotionIconMapper.mapToEmotionItem(item.emotion, R.drawable.ic_question_mark).iconRes,
                 formattedDate = item.date.format(DateTimeFormatter.ofPattern("HH:mm")),
-                activities = item.activityIds.split(",").map { activityId ->
-                    activityIconMapper.mapToActivityItem(
-                        requireNotNull(activities.find { it.id == activityId.toLong()}),
-                        R.drawable.ic_question_mark
-                    )
+                activities = item.activities.map {
+                    activityIconMapper.mapToActivityItem(it, R.drawable.ic_question_mark)
                 }
             )
         }

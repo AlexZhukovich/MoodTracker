@@ -5,26 +5,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexzh.moodtracker.R
-import com.alexzh.moodtracker.data.local.*
+import com.alexzh.moodtracker.data.EmotionHistoryRepository
 import com.alexzh.moodtracker.data.local.adapter.DATE_TIME_ZONE_UTC
+import com.alexzh.moodtracker.data.model.EmotionHistory
+import com.alexzh.moodtracker.data.util.Result
 import com.alexzh.moodtracker.presentation.core.icon.ActivityIconMapper
 import com.alexzh.moodtracker.presentation.core.icon.EmotionIconMapper
-import com.alexzh.moodtrackerdb.EmotionHistoryWithActivities
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZonedDateTime
 
 class AddMoodViewModel(
-    private val emotionDataSource: EmotionDataSource,
-    private val activityDataSource: ActivityDataSource,
-    private val emotionHistoryDataSource: EmotionHistoryDataSource,
-    private val emotionHistoryWithActivityDataSource: EmotionHistoryWithActivityDataSource,
-    private val emotionHistoryToActivityDataSource: EmotionHistoryToActivityDataSource,
+    private val emotionHistoryRepository: EmotionHistoryRepository,
     private val activityIconMapper: ActivityIconMapper,
     private val emotionIconMapper: EmotionIconMapper
 ) : ViewModel() {
-    private var existingEntity: EmotionHistoryWithActivities? = null
+    private var emotionHistory: EmotionHistory? = null
 
     private val _state = mutableStateOf(AddMoodScreenState())
     val state: State<AddMoodScreenState> = _state
@@ -43,37 +40,48 @@ class AddMoodViewModel(
     }
 
     private fun load(emotionHistoryId: Long) {
-        _state.value = _state.value.copy(
-            isLoading = true,
-            emotions = emptyList(),
-            activities = emptyList(),
-            isSaving = false,
-            isSaved = false
-        )
         viewModelScope.launch {
-            val emotions = emotionDataSource.getEmotions()
-            val activities = activityDataSource.getActivities()
+            emotionHistoryRepository.getEmotionHistoryById(emotionHistoryId).collect { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        emotionHistory = null
+                        _state.value = _state.value.copy(
+                            loading = AddMoodScreenLoading.LOADING,
+                            emotions = emptyList(),
+                            activities = emptyList(),
+                            completedOperation = AddMoodScreenCompletedOperation.NONE
+                        )
+                    }
+                    is Result.Success -> {
+                        emotionHistory = result.data
+                    }
+                    is Result.Error -> {
+                        emotionHistory = null
+                    }
+                }
+            }
 
-            existingEntity = emotionHistoryWithActivityDataSource.getEmotionHistoryWithActivitiesById(emotionHistoryId)
+            val emotions = emotionHistoryRepository.getEmotions()
+            val activities = emotionHistoryRepository.getActivities()
             _state.value = _state.value.copy(
-                isLoading = false,
-                date = existingEntity?.date?.toLocalDate() ?: LocalDate.now(),
-                time = existingEntity?.date?.toLocalTime() ?: LocalTime.now(),
+                loading = AddMoodScreenLoading.NONE,
+                date = emotionHistory?.date?.toLocalDate() ?: LocalDate.now(),
+                time = emotionHistory?.date?.toLocalTime() ?: LocalTime.now(),
                 emotions = emotions.map {
                     emotionIconMapper.mapToSelectableEmotionItem(
                         it,
                         R.drawable.ic_question_mark,
-                        existingEntity?.emotionId == it.id
+                        emotionHistory?.emotion?.id == it.id
                     )
                 },
-                activities = activities.map {
+                activities = activities.map { activity ->
                     activityIconMapper.mapToSelectableActivityItem(
-                        it,
+                        activity,
                         R.drawable.ic_question_mark,
-                        existingEntity?.activityIds?.contains(it.id.toString()) ?: false
+                        emotionHistory?.activities?.firstOrNull { it.id == activity.id } != null
                     )
                 },
-                note = if (existingEntity == null) "" else existingEntity?.note ?: ""
+                note = emotionHistory?.note ?: ""
             )
         }
     }
@@ -115,59 +123,34 @@ class AddMoodViewModel(
     }
 
     private fun delete() {
-        // TODO: THINK WHAT DO DO WITH IT - HOW TO DIFFERENTIATE LOADING - SAVING - DELETEING
-        _state.value = _state.value.copy(isLoading = true)
-        viewModelScope.launch {
-            // TODO: DELETE IN ONE TRANSACTION
-            existingEntity?.let { entity ->
-                val activitiesToDelete = existingEntity?.activityIds?.split(",") ?: emptyList()
-                activitiesToDelete.forEach {
-                    emotionHistoryToActivityDataSource.deleteByEmotionHistoryIdAndActivityId(
-                        entity.id,
-                        it.toLong()
-                    )
-                }
+        emotionHistory?.let {
+            _state.value = _state.value.copy(loading = AddMoodScreenLoading.DELETING)
+            viewModelScope.launch {
+                emotionHistoryRepository.deleteEmotionHistory(it)
 
-                emotionHistoryDataSource.deleteEmotionHistory(entity.id)
+                _state.value = _state.value.copy(
+                    loading = AddMoodScreenLoading.NONE,
+                    completedOperation = AddMoodScreenCompletedOperation.DELETED
+                )
             }
-            // TODO: I NEED TO USE ANOTHER STATE PROP INSTEAD OF "isSaved"
-            _state.value = _state.value.copy(isLoading = false, isSaved = true)
         }
     }
 
     private fun save() {
-        _state.value = _state.value.copy(isSaving = true)
+        _state.value = _state.value.copy(loading = AddMoodScreenLoading.SAVING)
 
         viewModelScope.launch {
-            // TODO: INSERT IT INTO SINGLE TRANSACTION IN REPOSITORY
-            emotionHistoryDataSource.insertEmotionHistory(
+            emotionHistoryRepository.insertOrUpdateEmotionHistory(
+                id = emotionHistory?.id,
                 date = ZonedDateTime.of(_state.value.date, _state.value.time, DATE_TIME_ZONE_UTC),
                 emotionId = _state.value.emotions.first { it.isSelected }.emotionId,
-                note = _state.value.note.ifEmpty { null },
-                id = existingEntity?.id
+                selectedActivityIds = _state.value.activities.filter { it.isSelected }.map { it.id },
+                note = _state.value.note
             )
-            val newId = emotionHistoryDataSource.getLastInsertedRowId()
-            // TODO: CHECK WHAT IT RETURNS FOR EMPTY DATABASE
-            if (newId != null) {
-                existingEntity?.let { emotionHistoryWithActivities ->
-                    val activitiesToDelete = existingEntity?.activityIds?.split(",") ?: emptyList()
-
-                    activitiesToDelete.forEach {
-                        emotionHistoryToActivityDataSource.deleteByEmotionHistoryIdAndActivityId(
-                            emotionHistoryWithActivities.id,
-                            it.toLong()
-                        )
-                    }
-                }
-
-                _state.value.activities.filter { it.isSelected }.forEach { activity ->
-                    emotionHistoryToActivityDataSource.insertEmotionHistoryToActivity(
-                        newId,
-                        activity.id
-                    )
-                }
-                _state.value = AddMoodScreenState(isSaving = false, isSaved = true)
-            }
+            _state.value = AddMoodScreenState(
+                loading = AddMoodScreenLoading.NONE,
+                completedOperation = AddMoodScreenCompletedOperation.SAVED
+            )
         }
     }
 }
