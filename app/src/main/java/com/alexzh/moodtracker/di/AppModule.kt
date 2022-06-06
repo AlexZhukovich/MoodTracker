@@ -1,9 +1,10 @@
 package com.alexzh.moodtracker.di
 
 import com.alexzh.moodtracker.MoodTrackerDatabase
-import com.alexzh.moodtracker.data.DefaultEmotionHistoryRepository
 import com.alexzh.moodtracker.data.EmotionHistoryRepository
-import com.alexzh.moodtracker.data.local.*
+import com.alexzh.moodtracker.data.EmotionHistoryRepositoryImpl
+import com.alexzh.moodtracker.data.local.LocalEmotionHistoryDataSource
+import com.alexzh.moodtracker.data.local.LocalEmotionHistoryDataSourceImpl
 import com.alexzh.moodtracker.data.local.adapter.zonedDateTimeAdapter
 import com.alexzh.moodtracker.presentation.core.date.DefaultTimeFormatter
 import com.alexzh.moodtracker.presentation.core.date.TimeFormatter
@@ -16,8 +17,10 @@ import com.alexzh.moodtracker.presentation.feature.today.TodayViewModel
 import com.alexzh.moodtrackerdb.EmotionHistoryEntity
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -37,8 +40,15 @@ val dataModule = module {
             )
         )
     }
+    factory(named("dbDispatcher")) { Dispatchers.IO }
 
-    factory<EmotionHistoryRepository> { DefaultEmotionHistoryRepository(get()) }
+    factory<LocalEmotionHistoryDataSource> {
+        LocalEmotionHistoryDataSourceImpl(
+            get(),
+            get(named("dbDispatcher"))
+        )
+    }
+    factory<EmotionHistoryRepository> { EmotionHistoryRepositoryImpl(get()) }
 }
 
 val appModule = module {
