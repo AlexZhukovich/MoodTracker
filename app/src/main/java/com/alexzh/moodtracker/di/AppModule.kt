@@ -13,6 +13,7 @@ import com.alexzh.moodtracker.presentation.core.icon.DefaultActivityIconMapper
 import com.alexzh.moodtracker.presentation.core.icon.DefaultEmotionIconMapper
 import com.alexzh.moodtracker.presentation.core.icon.EmotionIconMapper
 import com.alexzh.moodtracker.presentation.feature.addmood.AddMoodViewModel
+import com.alexzh.moodtracker.presentation.feature.stats.StatisticsViewModel
 import com.alexzh.moodtracker.presentation.feature.today.TodayViewModel
 import com.alexzh.moodtrackerdb.EmotionHistoryEntity
 import com.squareup.sqldelight.android.AndroidSqliteDriver
@@ -68,6 +69,12 @@ val appModule = module {
         AddMoodViewModel(
             get(),
             get(),
+            get()
+        )
+    }
+
+    viewModel {
+        StatisticsViewModel(
             get()
         )
     }

@@ -1,0 +1,11 @@
+CREATE VIEW dayToAverageHappinessLevel AS
+SELECT
+    emotionHistoryEntity.date,
+    emotionEntity.happinessLevel
+FROM emotionHistoryEntity, emotionEntity
+WHERE emotionHistoryEntity.emotionId = emotionEntity.id
+ORDER BY emotionHistoryEntity.date ASC;
+
+getDayToAverageHappinessLevel:
+SELECT *
+FROM dayToAverageHappinessLevel;

@@ -77,8 +77,6 @@ fun TodayScreen(
             ) {
                 item {
                     Section(stringResource(R.string.todayScreen_emotions_label)) {
-
-
                         when {
                             uiState.isLoading -> LoadingScreen()
                             uiState.items.isEmpty() -> EmptyScreen()
