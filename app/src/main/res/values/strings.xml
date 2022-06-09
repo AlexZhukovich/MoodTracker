@@ -3,11 +3,13 @@
 
     <!-- Navigation -->
     <string name="navigation_back_contentDescription">Back</string>
-    
+    <string name="navigation_today_label">Today</string>
+    <string name="navigation_statistics_label">Stats</string>
+
     <!-- Today -->
     <string name="todayScreen_add_label">Add</string>
     <string name="todayScreen_emotions_label">Emotions</string>
-    <string name="todayScreen_noData_label">"No data yet"</string>
+    <string name="todayScreen_noData_label">"No data"</string>
 
     <!-- Add mood -->
     <string name="addMoodScreen_title">How are you?</string>
@@ -16,6 +18,14 @@
     <string name="addMoodScreen_time_label">Time</string>
     <string name="addMoodScreen_note_label">Note</string>
     <string name="addMoodScreen_save_title">Save</string>
+
+    <!-- Statistics -->
+    <string name="statisticsScreen_title">Statistics</string>
+    <string name="statisticsScreen_moodChart_label">Mood Chart</string>
+    <string name="statisticsScreen_currentWeek_label">Current week</string>
+    <string name="statisticsScreen_previousWeek_label">Previous week</string>
+    <string name="statisticsScreen_nextWeek_label">Next week</string>
+    <string name="statisticsScreen_noData_label">"No data"</string>
 
     <string name="addMoodScreen_error_selectEmotionAndActivity">Please select emotion and activity</string>
 </resources>

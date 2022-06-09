@@ -77,8 +77,6 @@ fun TodayScreen(
             ) {
                 item {
                     Section(stringResource(R.string.todayScreen_emotions_label)) {
-
-
                         when {
                             uiState.isLoading -> LoadingScreen()
                             uiState.items.isEmpty() -> EmptyScreen()
@@ -152,6 +150,7 @@ private fun EmotionHistoryItem(
         Icon(
             modifier = Modifier.size(64.dp),
             painter = painterResource(item.iconId),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
             contentDescription = null
         )
 

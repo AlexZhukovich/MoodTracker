@@ -1,18 +1,20 @@
 package com.alexzh.moodtracker.presentation.navigation
 
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandIn
-import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.alexzh.moodtracker.presentation.feature.addmood.AddMoodScreen
+import com.alexzh.moodtracker.presentation.feature.stats.StatisticsScreen
 import com.alexzh.moodtracker.presentation.feature.today.TodayScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -23,36 +25,35 @@ import org.koin.androidx.compose.get
 @ExperimentalComposeUiApi
 @ExperimentalMaterial3Api
 @Composable
-fun AppNavigation(navController: NavHostController) {
+fun AppNavigation(
+    navController: NavHostController,
+    isBottomBarDisplayed: MutableState<Boolean>
+) {
     AnimatedNavHost(
         navController = navController,
         startDestination = Screens.TodayScreen.route,
-        enterTransition = { expandIn(animationSpec = tween(800)) },
-        exitTransition = { shrinkOut(animationSpec = tween(800)) }
+        enterTransition = { fadeIn(animationSpec = tween(400)) },
+        exitTransition = { fadeOut(animationSpec = tween(400)) }
     ) {
         composable(
             route = Screens.TodayScreen.route,
-            enterTransition = {
-                if (initialState.destination.route == Screens.AddMoodScreen.route) {
-                    slideIntoContainer(
-                        AnimatedContentScope.SlideDirection.Right,
-                        animationSpec = tween(600)
-                    )
-                } else null
-            },
-            exitTransition = {
-                if (targetState.destination.route?.startsWith(Screens.AddMoodScreen.prefix) == true) {
-                    slideOutOfContainer(
-                        AnimatedContentScope.SlideDirection.Left,
-                        animationSpec = tween(600)
-                    )
-                } else null
-            }
         ) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = true
+            }
             TodayScreen(
                 viewModel = get(),
                 onAdd = { navController.navigate(Screens.AddMoodScreen.createRoute(-1L)) },
                 onEdit = { navController.navigate(Screens.AddMoodScreen.createRoute(it)) }
+            )
+        }
+
+        composable(route = Screens.StatisticsScreen.route) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = true
+            }
+            StatisticsScreen(
+                viewModel = get()
             )
         }
 
@@ -62,22 +63,11 @@ fun AppNavigation(navController: NavHostController) {
                 navArgument(Screens.AddMoodScreen.paramName) {
                     type = NavType.LongType
                 }
-            ),
-            enterTransition = {
-                if (initialState.destination.route == Screens.TodayScreen.route) slideIntoContainer(
-                    AnimatedContentScope.SlideDirection.Left,
-                    animationSpec = tween(600)
-                )
-                else null
-            },
-            exitTransition = {
-                if (targetState.destination.route == Screens.TodayScreen.route) slideOutOfContainer(
-                    AnimatedContentScope.SlideDirection.Right,
-                    animationSpec = tween(600)
-                )
-                else null
-            }
+            )
         ) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = false
+            }
             AddMoodScreen(
                 emotionHistoryId = it.arguments?.getLong(Screens.AddMoodScreen.paramName) ?: -1,
                 viewModel = get(),

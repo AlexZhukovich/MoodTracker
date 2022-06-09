@@ -4,10 +4,16 @@ import com.alexzh.moodtracker.data.model.Activity
 import com.alexzh.moodtracker.data.model.Emotion
 import com.alexzh.moodtracker.data.model.EmotionHistory
 import com.alexzh.moodtracker.data.util.Result
+import com.alexzh.moodtrackerdb.DayToHappinessLevel
 import kotlinx.coroutines.flow.Flow
 import java.time.ZonedDateTime
 
 interface EmotionHistoryRepository {
+
+    suspend fun getDayToAverageHappinessLevel(
+        startDate: ZonedDateTime,
+        endDate: ZonedDateTime
+    ): List<DayToHappinessLevel>
 
     fun getEmotionsHistoryByDate(
         startDate: ZonedDateTime,

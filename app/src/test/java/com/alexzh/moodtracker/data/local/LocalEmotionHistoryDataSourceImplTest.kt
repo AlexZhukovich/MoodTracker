@@ -6,6 +6,7 @@ import com.alexzh.moodtracker.data.local.adapter.zonedDateTimeAdapter
 import com.alexzh.moodtracker.data.model.Activity
 import com.alexzh.moodtracker.data.model.Emotion
 import com.alexzh.moodtracker.data.model.EmotionHistory
+import com.alexzh.moodtrackerdb.DayToHappinessLevel
 import com.alexzh.moodtrackerdb.EmotionHistoryEntity
 import com.alexzh.moodtrackerdb.EmotionHistoryToActivityEntity
 import com.google.common.truth.Truth.assertThat
@@ -55,6 +56,51 @@ class LocalEmotionHistoryDataSourceImplTest {
         database,
         dispatcher
     )
+
+    @Test
+    fun `getDayToAverageHappinessLevel returns list of day to happiness level when data is available for specific dates`() = runTest {
+        val startDate = ZonedDateTime.of(LocalDate.now(), LocalTime.of(0,0, 0), DATE_TIME_ZONE_UTC)
+        val endDate = ZonedDateTime.of(LocalDate.now(), LocalTime.of(23,59, 59), DATE_TIME_ZONE_UTC)
+        val insertHistoryDate = ZonedDateTime.of(LocalDate.now(), LocalTime.of(8,56), DATE_TIME_ZONE_UTC)
+        val expectedData = listOf(
+            DayToHappinessLevel(insertHistoryDate, 1),
+            DayToHappinessLevel(insertHistoryDate, 2),
+            DayToHappinessLevel(insertHistoryDate, 3),
+        )
+
+        dataSource.insertOrUpdateEmotionHistory(
+            date = insertHistoryDate,
+            emotionId = 1L,
+            selectedActivityIds = listOf(1L),
+            note = null
+        )
+
+        dataSource.insertOrUpdateEmotionHistory(
+            date = insertHistoryDate,
+            emotionId = 2L,
+            selectedActivityIds = listOf(1L),
+            note = null
+        )
+
+        dataSource.insertOrUpdateEmotionHistory(
+            date = insertHistoryDate,
+            emotionId = 3L,
+            selectedActivityIds = listOf(1L),
+            note = null
+        )
+
+        assertThat(dataSource.getDayToAverageHappinessLevel(startDate, endDate))
+            .isEqualTo(expectedData)
+    }
+
+    @Test
+    fun `getDayToAverageHappinessLevel returns empty list of day to happiness level when no data is available for specific dates`() = runTest {
+        val startDate = ZonedDateTime.of(LocalDate.now(), LocalTime.of(0,0, 0), DATE_TIME_ZONE_UTC)
+        val endDate = ZonedDateTime.of(LocalDate.now(), LocalTime.of(23,59, 59), DATE_TIME_ZONE_UTC)
+
+        assertThat(dataSource.getDayToAverageHappinessLevel(startDate, endDate))
+            .isEqualTo(emptyList<DayToHappinessLevel>())
+    }
 
     @Test
     fun `getEmotionsHistoryByDate returns list of emotion history when data are available for specific date`() = runTest {

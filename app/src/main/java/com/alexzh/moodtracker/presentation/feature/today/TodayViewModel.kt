@@ -40,8 +40,8 @@ class TodayViewModel(
     private fun fetchMoodHistory(date: LocalDate) {
         _uiState.value = _uiState.value.copy(isLoading = true, items = emptyList())
         viewModelScope.launch {
-            val startDate = ZonedDateTime.of(date, LocalTime.of(0,0), DATE_TIME_ZONE_UTC)
-            val endDate = ZonedDateTime.of(date, LocalTime.of(23,59), DATE_TIME_ZONE_UTC)
+            val startDate = ZonedDateTime.of(date, LocalTime.of(0, 0, 0), DATE_TIME_ZONE_UTC)
+            val endDate = ZonedDateTime.of(date, LocalTime.of(23, 59, 59), DATE_TIME_ZONE_UTC)
             emotionHistoryRepository.getEmotionsHistoryByDate(startDate, endDate).collect { result ->
                 when (result) {
                     is Result.Loading -> {
