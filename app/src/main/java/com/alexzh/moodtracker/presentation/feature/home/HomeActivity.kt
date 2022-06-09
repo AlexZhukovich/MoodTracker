@@ -52,8 +52,7 @@ class HomeActivity : ComponentActivity() {
                             exit = slideOutVertically(targetOffsetY = { it }),
                         ) {
                             NavigationBar(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                containerColor = MaterialTheme.colorScheme.surface,
                             ) {
                                 items.forEach { item ->
                                     NavigationBarItem(

@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun DateToHappinessChart(
-    data: List<Pair<LocalDate, Double>>,
+    data: List<Pair<LocalDate, Float>>,
     modifier: Modifier,
     axisColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     showYAxis: Boolean = false,
@@ -122,11 +122,11 @@ fun DateToHappinessChart(
                         rect = Rect(
                             Offset(
                                 horizontalPadding + happinessLevelDescriptionWidth + (betweenColumnPadding * (index)) + (columnWidth * index),
-                                size.height - timeDescriptionHeight - (dateToHappiness.second.toFloat() * chartHeight / 6f) - (iconSizeInPx / 2f) + 10
+                                size.height - timeDescriptionHeight - (dateToHappiness.second * chartHeight / 6f) - (iconSizeInPx / 2f) + 10
                             ),
                             Size(
                                 columnWidth,
-                                (dateToHappiness.second.toFloat() * chartHeight / 6f)
+                                (dateToHappiness.second * chartHeight / 6f)
                             )
                         ),
                         topLeft = cornerRadius,
@@ -157,7 +157,7 @@ fun DateToHappinessChart(
         data.onEachIndexed { index, dateToHappiness ->
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
-                    dateToHappiness.first.format(DateTimeFormatter.ofPattern("E")),
+                    dateToHappiness.first.format(DateTimeFormatter.ofPattern("E, dd")),
                     (happinessLevelDescriptionWidth + horizontalPadding + (betweenColumnPadding * (index)) + (columnWidth * index)) + (columnWidth / 2),
                     chartHeight + verticalPadding,
                     textPaint

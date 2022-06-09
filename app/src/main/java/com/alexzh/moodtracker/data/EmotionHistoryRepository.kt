@@ -10,8 +10,10 @@ import java.time.ZonedDateTime
 
 interface EmotionHistoryRepository {
 
-    // TODO: ADD PARAMS
-    suspend fun getDayToAverageHappinessLevel(): List<DayToAverageHappinessLevel>
+    suspend fun getDayToAverageHappinessLevel(
+        startDate: ZonedDateTime,
+        endDate: ZonedDateTime
+    ): List<DayToAverageHappinessLevel>
 
     fun getEmotionsHistoryByDate(
         startDate: ZonedDateTime,

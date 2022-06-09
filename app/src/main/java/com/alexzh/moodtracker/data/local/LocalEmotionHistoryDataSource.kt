@@ -8,8 +8,10 @@ import java.time.ZonedDateTime
 
 interface LocalEmotionHistoryDataSource {
 
-    // TODO: ADD PARAMS
-    suspend fun getDayToAverageHappinessLevel(): List<DayToAverageHappinessLevel>
+    suspend fun getDayToAverageHappinessLevel(
+        startDate: ZonedDateTime,
+        endDate: ZonedDateTime
+    ): List<DayToAverageHappinessLevel>
 
     suspend fun getEmotionsHistoryByDate(
         startDate: ZonedDateTime,

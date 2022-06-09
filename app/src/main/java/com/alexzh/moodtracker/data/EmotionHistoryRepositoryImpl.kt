@@ -14,8 +14,11 @@ class EmotionHistoryRepositoryImpl(
     private val localDataSource: LocalEmotionHistoryDataSource
 ) : EmotionHistoryRepository {
 
-    override suspend fun getDayToAverageHappinessLevel(): List<DayToAverageHappinessLevel> {
-        return localDataSource.getDayToAverageHappinessLevel()
+    override suspend fun getDayToAverageHappinessLevel(
+        startDate: ZonedDateTime,
+        endDate: ZonedDateTime
+    ): List<DayToAverageHappinessLevel> {
+        return localDataSource.getDayToAverageHappinessLevel(startDate, endDate)
     }
 
     override fun getEmotionsHistoryByDate(

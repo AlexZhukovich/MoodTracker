@@ -3,8 +3,6 @@ package com.alexzh.moodtracker.presentation.feature.stats
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,13 +32,29 @@ fun StatisticsScreen(
     ) { paddingValues ->
         val uiState = viewModel.state.value
 
-        when {
-            uiState.loading -> LoadingScreen(paddingValues)
-            else -> LoadedSuccessfullyScreen(paddingValues, uiState)
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+                .padding(
+                    start = 0.dp,
+                    top = paddingValues.calculateTopPadding(),
+                    end = 0.dp,
+                    bottom = paddingValues.calculateBottomPadding()
+                )
+        ) {
+            item {
+                Section(stringResource(R.string.statisticsScreen_moodChart_label)) {
+                    ChartHeader(uiState, viewModel)
+
+                    when {
+                        uiState.loading -> LoadingScreen(paddingValues)
+                        else -> LoadedSuccessfullyScreen(uiState)
+                    }
+                }
+            }
         }
 
         LaunchedEffect(Unit) {
-            viewModel.onEvent(StatisticsEvent.Load)
+            viewModel.onEvent(StatisticsEvent.LoadCurrentWeek)
         }
     }
 }
@@ -48,48 +62,89 @@ fun StatisticsScreen(
 @ExperimentalMaterial3Api
 @Composable
 private fun LoadedSuccessfullyScreen(
-    paddingValues: PaddingValues,
     state: StatisticsScreenState
 ) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
-            .padding(
-                start = 0.dp,
-                top = paddingValues.calculateTopPadding(),
-                end = 0.dp,
-                bottom = paddingValues.calculateBottomPadding()
-            )
-    ) {
-        item {
-            Section(stringResource(R.string.statisticsScreen_moodChart_label)) {
-                if (state.data.isEmpty()) {
-                    Box(
-                        modifier = Modifier.fillMaxWidth().height(72.dp * 2),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                modifier = Modifier.size(72.dp),
-                                painter = painterResource(R.drawable.ic_no_data),
-                                contentDescription = null
-                            )
-                            Text(stringResource(R.string.todayScreen_noData_label), fontSize = 18.sp)
-                        }
-                    }
-                } else {
-                    DateToHappinessChart(
-                        state.data,
-                        modifier = Modifier.fillMaxWidth()
-                            .height(250.dp)
-                            .padding(10.dp),
-                        axisColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                        showYAxis = false
-                    )
-                }
+    if (state.dateToHappinessData.items.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxWidth().height(72.dp * 2),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    modifier = Modifier.size(72.dp),
+                    painter = painterResource(R.drawable.ic_no_data),
+                    contentDescription = null
+                )
+                Text(
+                    stringResource(R.string.statisticsScreen_noData_label),
+                    fontSize = 18.sp
+                )
             }
+        }
+    } else {
+        DateToHappinessChart(
+            state.dateToHappinessData.items,
+            modifier = Modifier.fillMaxWidth()
+                .height(200.dp)
+                .padding(8.dp),
+            axisColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+            showYAxis = false
+        )
+    }
+}
+
+@Composable
+private fun ChartHeader(
+    state: StatisticsScreenState,
+    viewModel: StatisticsViewModel
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = state.dateToHappinessData.datePeriod,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        IconButton(
+            modifier = Modifier.size(32.dp),
+            onClick = { viewModel.onEvent(StatisticsEvent.LoadPreviousWeek) }
+        ) {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(R.drawable.ic_small_arrow_left),
+                contentDescription = stringResource(R.string.statisticsScreen_previousWeek_label),
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+            )
+        }
+        IconButton(
+            modifier = Modifier.size(32.dp),
+            onClick = { viewModel.onEvent(StatisticsEvent.LoadCurrentWeek) }
+        ) {
+            Icon(
+                modifier = Modifier.size(24.dp).padding(),
+                painter = painterResource(R.drawable.ic_nav_today),
+                contentDescription = stringResource(R.string.statisticsScreen_currentWeek_label),
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+            )
+        }
+        IconButton(
+            modifier = Modifier.size(32.dp),
+            onClick = { viewModel.onEvent(StatisticsEvent.LoadNextWeek) }
+        ) {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(R.drawable.ic_small_arrow_right),
+                contentDescription = stringResource(R.string.statisticsScreen_nextWeek_label),
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+            )
         }
     }
 }

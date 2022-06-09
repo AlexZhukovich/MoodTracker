@@ -9,7 +9,7 @@
     <!-- Today -->
     <string name="todayScreen_add_label">Add</string>
     <string name="todayScreen_emotions_label">Emotions</string>
-    <string name="todayScreen_noData_label">"No data yet"</string>
+    <string name="todayScreen_noData_label">"No data"</string>
 
     <!-- Add mood -->
     <string name="addMoodScreen_title">How are you?</string>
@@ -22,6 +22,10 @@
     <!-- Statistics -->
     <string name="statisticsScreen_title">Statistics</string>
     <string name="statisticsScreen_moodChart_label">Mood Chart</string>
+    <string name="statisticsScreen_currentWeek_label">Current week</string>
+    <string name="statisticsScreen_previousWeek_label">Previous week</string>
+    <string name="statisticsScreen_nextWeek_label">Next week</string>
+    <string name="statisticsScreen_noData_label">"No data"</string>
 
     <string name="addMoodScreen_error_selectEmotionAndActivity">Please select emotion and activity</string>
 </resources>

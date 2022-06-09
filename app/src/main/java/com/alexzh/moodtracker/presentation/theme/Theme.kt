@@ -85,9 +85,6 @@ fun AppTheme(
         color = if (darkTheme) DarkColorScheme.surface else LightColorScheme.surface,
         darkIcons = !darkTheme
     )
-    systemUiController.setNavigationBarColor(
-        color = if (darkTheme) DarkColorScheme.primaryContainer else LightColorScheme.primaryContainer,
-    )
 
     MaterialTheme(
         colorScheme = colorScheme,

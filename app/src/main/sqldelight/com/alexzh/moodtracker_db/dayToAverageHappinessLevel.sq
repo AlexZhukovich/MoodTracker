@@ -8,4 +8,5 @@ ORDER BY emotionHistoryEntity.date ASC;
 
 getDayToAverageHappinessLevel:
 SELECT *
-FROM dayToAverageHappinessLevel;
+FROM dayToAverageHappinessLevel
+WHERE date >= :startDate AND date <= :endDate;

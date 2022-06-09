@@ -22,9 +22,14 @@ class LocalEmotionHistoryDataSourceImpl(
     private val emotionHistoryToActivityQueries = db.emotionHistoryToActivityEntityQueries
     private val emotionHistoryWithActivitiesQueries = db.emotionHistoryWithActivitiesQueries
 
-    override suspend fun getDayToAverageHappinessLevel(): List<DayToAverageHappinessLevel> {
+    override suspend fun getDayToAverageHappinessLevel(
+        startDate: ZonedDateTime,
+        endDate: ZonedDateTime
+    ): List<DayToAverageHappinessLevel> {
         return withContext(dispatcher) {
-            dayToAverageHappinessLevelQueries.getDayToAverageHappinessLevel().executeAsList()
+            dayToAverageHappinessLevelQueries
+                .getDayToAverageHappinessLevel(startDate, endDate)
+                .executeAsList()
         }
     }
 
