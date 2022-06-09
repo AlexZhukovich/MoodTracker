@@ -3,7 +3,7 @@ package com.alexzh.moodtracker.data.local
 import com.alexzh.moodtracker.data.model.Activity
 import com.alexzh.moodtracker.data.model.Emotion
 import com.alexzh.moodtracker.data.model.EmotionHistory
-import com.alexzh.moodtrackerdb.DayToAverageHappinessLevel
+import com.alexzh.moodtrackerdb.DayToHappinessLevel
 import java.time.ZonedDateTime
 
 interface LocalEmotionHistoryDataSource {
@@ -11,7 +11,7 @@ interface LocalEmotionHistoryDataSource {
     suspend fun getDayToAverageHappinessLevel(
         startDate: ZonedDateTime,
         endDate: ZonedDateTime
-    ): List<DayToAverageHappinessLevel>
+    ): List<DayToHappinessLevel>
 
     suspend fun getEmotionsHistoryByDate(
         startDate: ZonedDateTime,

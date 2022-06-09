@@ -150,6 +150,7 @@ private fun EmotionHistoryItem(
         Icon(
             modifier = Modifier.size(64.dp),
             painter = painterResource(item.iconId),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
             contentDescription = null
         )
 

@@ -1,4 +1,4 @@
-CREATE VIEW dayToAverageHappinessLevel AS
+CREATE VIEW dayToHappinessLevel AS
 SELECT
     emotionHistoryEntity.date,
     emotionEntity.happinessLevel
@@ -6,7 +6,7 @@ FROM emotionHistoryEntity, emotionEntity
 WHERE emotionHistoryEntity.emotionId = emotionEntity.id
 ORDER BY emotionHistoryEntity.date ASC;
 
-getDayToAverageHappinessLevel:
+getDayToHappinessLevel:
 SELECT *
-FROM dayToAverageHappinessLevel
+FROM dayToHappinessLevel
 WHERE date >= :startDate AND date <= :endDate;

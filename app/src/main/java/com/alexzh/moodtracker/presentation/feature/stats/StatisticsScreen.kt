@@ -121,7 +121,7 @@ private fun ChartHeader(
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(R.drawable.ic_small_arrow_left),
                 contentDescription = stringResource(R.string.statisticsScreen_previousWeek_label),
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         IconButton(
@@ -132,7 +132,7 @@ private fun ChartHeader(
                 modifier = Modifier.size(24.dp).padding(),
                 painter = painterResource(R.drawable.ic_nav_today),
                 contentDescription = stringResource(R.string.statisticsScreen_currentWeek_label),
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         IconButton(
@@ -143,7 +143,7 @@ private fun ChartHeader(
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(R.drawable.ic_small_arrow_right),
                 contentDescription = stringResource(R.string.statisticsScreen_nextWeek_label),
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

@@ -157,7 +157,7 @@ fun DateToHappinessChart(
         data.onEachIndexed { index, dateToHappiness ->
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
-                    dateToHappiness.first.format(DateTimeFormatter.ofPattern("E, dd")),
+                    dateToHappiness.first.format(DateTimeFormatter.ofPattern("E")),
                     (happinessLevelDescriptionWidth + horizontalPadding + (betweenColumnPadding * (index)) + (columnWidth * index)) + (columnWidth / 2),
                     chartHeight + verticalPadding,
                     textPaint

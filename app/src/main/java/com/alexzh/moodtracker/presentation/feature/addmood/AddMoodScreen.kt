@@ -153,7 +153,7 @@ private fun LoadedSuccessfullyScreen(
                             },
                         painter = painterResource(emotion.iconRes),
                         contentDescription = null,
-                        tint = if (emotion.emotionId == selectedEmotion?.emotionId) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                        tint = if (emotion.emotionId == selectedEmotion?.emotionId) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

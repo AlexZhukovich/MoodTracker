@@ -24,8 +24,8 @@ fun Section(
             .animateContentSize()
     ) {
         Text(
-            modifier = Modifier.padding(bottom = 4.dp),
-            style = MaterialTheme.typography.titleSmall,
+            modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
+            style = MaterialTheme.typography.titleMedium,
             text = title
         )
         Card(
