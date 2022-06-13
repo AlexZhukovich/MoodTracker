@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 fun Route.userInfoRoutes(
     userInfoController: UserInfoController
 ) {
-    route("/users") {
+    route("/api/v1/users") {
         authenticate {
             get("/{id}") {
                 val userId: Long = call.parameters["id"]?.toLong() ?: -1L

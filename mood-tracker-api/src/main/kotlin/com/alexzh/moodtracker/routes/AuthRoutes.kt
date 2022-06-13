@@ -13,7 +13,7 @@ import io.ktor.server.routing.*
 fun Route.authRoutes(
     authController: AuthController
 ) {
-    route("/users") {
+    route("/api/v1/users") {
         post("/create") {
             val params = runCatching { call.receive<CreateUserRequestParams>() }.getOrElse {
                 throw BadRequestException("The 'username', 'email' and 'password' parameters are required")
