@@ -12,7 +12,7 @@ plugins {
                 id("org.jetbrains.kotlin.plugin.serialization") version "1.7.0"
 }
 
-group = "com.alexzh"
+group = "com.alexzh.moodtracker"
 version = "0.0.1"
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
