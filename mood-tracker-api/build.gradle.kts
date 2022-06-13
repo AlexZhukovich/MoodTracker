@@ -33,16 +33,14 @@ dependencies {
     // Logs
     implementation("io.ktor:ktor-server-call-logging-jvm:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    // Routing and Locations
-    implementation("io.ktor:ktor-server-locations-jvm:$ktorVersion")
     // Status Pages
     implementation("io.ktor:ktor-server-status-pages-jvm:$ktorVersion")
     // Content Negotiation
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
-    // Sessions
-    implementation("io.ktor:ktor-server-sessions-jvm:$ktorVersion")
     // Auth
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jvm:$ktorVersion")
     // CORS
     implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
