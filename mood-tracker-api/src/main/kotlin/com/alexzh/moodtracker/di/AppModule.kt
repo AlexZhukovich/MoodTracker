@@ -14,7 +14,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val appModule = module {
-    single(named("secret")) { System.getenv()["secret"] }
+    single(named("secret")) { System.getenv()["SECRET_KEY"] }
 
     single<Encryptor> {
         EncryptorImpl(secretKey = get(named("secret")))
