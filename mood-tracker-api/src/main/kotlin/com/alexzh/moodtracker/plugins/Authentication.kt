@@ -13,7 +13,7 @@ fun Application.configureAuthentication() {
     val userRepository: UserRepository by inject(UserRepository::class.java)
 
     install(Authentication) {
-        jwt {
+        jwt("jwt") {
             verifier(jwtService.verifier)
             validate {
                 val userId = it.payload.getClaim(jwtService.claim).asLong()

@@ -12,4 +12,8 @@ sealed class UserResponse(val status: HttpStatusCode) {
     class Error(
         val message: String
     ): UserResponse(HttpStatusCode.BadRequest)
+
+    class Unauthorized(
+        val message: String
+    ): UserResponse(HttpStatusCode.Unauthorized)
 }

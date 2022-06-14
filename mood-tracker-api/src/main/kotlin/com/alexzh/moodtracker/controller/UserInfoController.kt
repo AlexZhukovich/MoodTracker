@@ -1,22 +1,29 @@
 package com.alexzh.moodtracker.controller
 
-import com.alexzh.moodtracker.auth.principal.UserPrincipal
+import com.alexzh.moodtracker.data.UserRepository
 import com.alexzh.moodtracker.data.model.UserInfo
+import com.alexzh.moodtracker.model.UserSession
 import com.alexzh.moodtracker.model.response.UserResponse
+import io.ktor.server.sessions.*
 
-class UserInfoController {
+class UserInfoController(
+    private val userRepository: UserRepository
+) {
 
-    fun getUserInfo(
+    suspend fun getUserInfo(
         userId: Long,
-        userPrincipal: UserPrincipal?
+        sessions: CurrentSession,
     ): UserResponse {
+        val user = sessions.get<UserSession>()?.let {
+            userRepository.getUserById(it.id)
+        }
         return when {
-            userPrincipal == null -> UserResponse.Error("User should be logged in")
-            userPrincipal.user.id == userId -> UserResponse.Success(
+            user == null -> UserResponse.Unauthorized("Not Authorized")
+            user.id == userId -> UserResponse.Success(
                 UserInfo(
-                    id = userPrincipal.user.id,
-                    name = userPrincipal.user.name,
-                    email = userPrincipal.user.email
+                    id = user.id,
+                    name = user.name,
+                    email = user.email
                 )
             )
             else -> UserResponse.Error("Problem retrieving active user information")

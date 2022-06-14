@@ -34,5 +34,9 @@ val appModule = module {
             userRepository = get()
         )
     }
-    factory { UserInfoController() }
+    factory {
+        UserInfoController(
+            userRepository = get()
+        )
+    }
 }
