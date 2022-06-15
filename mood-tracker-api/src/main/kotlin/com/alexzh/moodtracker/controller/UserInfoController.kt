@@ -22,7 +22,7 @@ class UserInfoController(
             user.id == userId -> UserResponse.Success(
                 UserInfo(
                     id = user.id,
-                    name = user.name,
+                    username = user.name,
                     email = user.email
                 )
             )

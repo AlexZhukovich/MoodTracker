@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserInfo(
     val id: Long,
-    val name: String,
+    val username: String,
     val email: String
 )
