@@ -8,6 +8,7 @@ import com.alexzh.moodtracker.data.util.Result
 import com.alexzh.moodtrackerdb.DayToHappinessLevel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.lang.RuntimeException
 import java.time.ZonedDateTime
 
 class EmotionHistoryRepositoryImpl(
@@ -45,7 +46,7 @@ class EmotionHistoryRepositoryImpl(
             val emotionHistory = localDataSource.getEmotionHistoryById(id)
             emit(
                 if (emotionHistory == null) {
-                    Result.Error("No items found")
+                    Result.Error(RuntimeException("No items found"))
                 } else {
                     Result.Success(emotionHistory)
                 }

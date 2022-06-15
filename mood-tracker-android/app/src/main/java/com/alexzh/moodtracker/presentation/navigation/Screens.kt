@@ -7,6 +7,8 @@ import com.alexzh.moodtracker.R
 private const val FULL_TODAY_SCREEN_ROUTE = "todayScreen"
 private const val FULL_ADD_MOOD_SCREEN_ROUTE = "${Screens.AddMoodScreen.prefix}/{${Screens.AddMoodScreen.paramName}}";
 private const val FULL_STATISTICS_SCREEN_ROUTE = "statisticsScreen"
+private const val FULL_SETTINGS_SCREEN_ROUTE = "settingsScreen"
+private const val FULL_PROFILE_SCREEN_ROUTE = "profileScreen"
 
 
 sealed class Screens(val route: String) {
@@ -34,6 +36,16 @@ sealed class Screens(val route: String) {
             )
         }
     }
+    object SettingsScreen : Screens(FULL_SETTINGS_SCREEN_ROUTE) {
+        fun toNavItem(): NavItem {
+            return NavItem(
+                title = R.string.navigation_settings_label,
+                icon = R.drawable.ic_nav_settings,
+                route = FULL_SETTINGS_SCREEN_ROUTE
+            )
+        }
+    }
+    object ProfileScreen : Screens(FULL_PROFILE_SCREEN_ROUTE)
 }
 
 // TODO: NAV ICON

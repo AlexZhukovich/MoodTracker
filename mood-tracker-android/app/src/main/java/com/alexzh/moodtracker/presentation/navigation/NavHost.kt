@@ -14,6 +14,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.alexzh.moodtracker.presentation.feature.addmood.AddMoodScreen
+import com.alexzh.moodtracker.presentation.feature.profile.ProfileScreen
+import com.alexzh.moodtracker.presentation.feature.settings.SettingsScreen
 import com.alexzh.moodtracker.presentation.feature.stats.StatisticsScreen
 import com.alexzh.moodtracker.presentation.feature.today.TodayScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -48,15 +50,6 @@ fun AppNavigation(
             )
         }
 
-        composable(route = Screens.StatisticsScreen.route) {
-            LaunchedEffect(Unit) {
-                isBottomBarDisplayed.value = true
-            }
-            StatisticsScreen(
-                viewModel = get()
-            )
-        }
-
         composable(
             route = Screens.AddMoodScreen.route,
             arguments = listOf(
@@ -70,6 +63,34 @@ fun AppNavigation(
             }
             AddMoodScreen(
                 emotionHistoryId = it.arguments?.getLong(Screens.AddMoodScreen.paramName) ?: -1,
+                viewModel = get(),
+                onBack = { navController.navigateUp() }
+            )
+        }
+
+        composable(route = Screens.StatisticsScreen.route) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = true
+            }
+            StatisticsScreen(
+                viewModel = get()
+            )
+        }
+
+        composable(route = Screens.SettingsScreen.route) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = true
+            }
+            SettingsScreen(
+                onProfile = { navController.navigate(Screens.ProfileScreen.route) }
+            )
+        }
+
+        composable(route = Screens.ProfileScreen.route) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = false
+            }
+            ProfileScreen(
                 viewModel = get(),
                 onBack = { navController.navigateUp() }
             )
