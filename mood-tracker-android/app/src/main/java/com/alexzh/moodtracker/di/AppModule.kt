@@ -17,6 +17,8 @@ import com.alexzh.moodtracker.presentation.core.icon.DefaultActivityIconMapper
 import com.alexzh.moodtracker.presentation.core.icon.DefaultEmotionIconMapper
 import com.alexzh.moodtracker.presentation.core.icon.EmotionIconMapper
 import com.alexzh.moodtracker.presentation.feature.addmood.AddMoodViewModel
+import com.alexzh.moodtracker.presentation.feature.auth.createaccount.CreateAccountViewModel
+import com.alexzh.moodtracker.presentation.feature.auth.login.LoginViewModel
 import com.alexzh.moodtracker.presentation.feature.profile.ProfileViewModel
 import com.alexzh.moodtracker.presentation.feature.stats.StatisticsViewModel
 import com.alexzh.moodtracker.presentation.feature.today.TodayViewModel
@@ -101,6 +103,18 @@ val appModule = module {
     viewModel {
         ProfileViewModel(
             get(),
+            get()
+        )
+    }
+
+    viewModel {
+        CreateAccountViewModel(
+            get()
+        )
+    }
+
+    viewModel {
+        LoginViewModel(
             get()
         )
     }
