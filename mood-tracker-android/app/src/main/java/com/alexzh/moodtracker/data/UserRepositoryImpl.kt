@@ -14,9 +14,7 @@ class UserRepositoryImpl(
     private val remoteService: UserRemoteService
 ): UserRepository {
 
-    override suspend fun getUserInfo(
-        userId: Long
-    ): Flow<Result<UserInfoModel>> {
+    override suspend fun getUserInfo(): Flow<Result<UserInfoModel>> {
         return flow {
             try {
                 emit(Result.Loading())

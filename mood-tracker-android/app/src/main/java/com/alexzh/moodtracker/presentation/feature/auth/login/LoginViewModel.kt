@@ -16,16 +16,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val authRepository: AuthRepository
 ): ViewModel() {
-    // TODO: REMOVE IT
-    val EMAIL = "test-account@alexzh.com"
-    val PASSWORD = "12345"
-
-    private val _state = mutableStateOf(
-        LoginScreenState(
-            email = EMAIL,
-            password = PASSWORD
-        )
-    )
+    private val _state = mutableStateOf(LoginScreenState())
     val state: State<LoginScreenState> = _state
 
     fun onEvent(event: LoginEvent) {

@@ -64,7 +64,6 @@ private val DarkColorScheme = darkColorScheme(
     inversePrimary = md_theme_dark_inversePrimary,
 )
 
-// TODO: FIX DARK THEME
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

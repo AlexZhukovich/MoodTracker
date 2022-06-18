@@ -1,5 +1,6 @@
 package com.alexzh.moodtracker.presentation.component.text
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -107,8 +108,8 @@ fun OutlinedTextFieldWithError(
     }
 }
 
-// TODO: APPLY LIGHT AND DARK COLORS FOR ALL PREVIEWS
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Composable
 fun Preview_OutlinedTextFieldWithError_Multiline_NoError() {
     val text = remember { mutableStateOf("Long long long long long long long long text ") }
@@ -123,7 +124,8 @@ fun Preview_OutlinedTextFieldWithError_Multiline_NoError() {
     )
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Composable
 fun Preview_OutlinedTextFieldWithError_Multiline_Error() {
     val text = remember { mutableStateOf("Long long long long long long long long text ") }

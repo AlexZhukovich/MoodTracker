@@ -29,8 +29,7 @@ class ProfileViewModel(
 
     private fun getUserInfo() {
         viewModelScope.launch {
-            // TODO: REMOVE HARDCODED USER_ID
-            userRepository.getUserInfo(userId = 1).collect { result ->
+            userRepository.getUserInfo().collect { result ->
                 when(result) {
                     is Result.Loading -> {
                         _state.value = _state.value.copy(

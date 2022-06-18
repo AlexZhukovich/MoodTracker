@@ -26,9 +26,6 @@ class AuthRepositoryImpl(
     ): Flow<Result<JwtToken>> {
         return flow {
             emit(Result.Loading())
-
-            // TODO: REMOVE IT
-            delay(1_000)
             try {
                 val response = remoteService.createUser(
                     CreateUserModel(email, password, name)
@@ -42,7 +39,6 @@ class AuthRepositoryImpl(
 
                         Result.Success(JwtToken(token))
                     } else {
-                        // TODO: COVER MORE ERROR CASES (CHECK BACK-END)
                         Result.Error(UserAlreadyExistException())
                     }
                 )
@@ -58,9 +54,6 @@ class AuthRepositoryImpl(
     ): Flow<Result<JwtToken>> {
         return flow {
             emit(Result.Loading())
-
-            // TODO: REMOVE IT
-            delay(1_000)
             try {
                 val response = remoteService.login(LoginUserModel(email, password))
                 if (response.isSuccessful) {
@@ -70,7 +63,6 @@ class AuthRepositoryImpl(
                     }
                     emit(Result.Success(JwtToken(token)))
                 } else {
-                    // TODO: COVER MORE ERROR CASES (CHECK BACK-END)
                     emit(Result.Error(InvalidCredentialsException()))
                 }
             } catch (ex: ConnectException) {

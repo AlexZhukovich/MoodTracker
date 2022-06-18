@@ -17,16 +17,7 @@ import java.lang.Exception
 class CreateAccountViewModel(
     private val authRepository: AuthRepository
 ): ViewModel() {
-    // TODO: REMOVE IT
-    val NAME = "Alex"
-    val EMAIL = "test-account@alexzh.com"
-    val PASSWORD = "12345"
-
-    private val _state = mutableStateOf(CreateAccountScreenState(
-        name = NAME,
-        email = EMAIL,
-        password = PASSWORD
-    ))
+    private val _state = mutableStateOf(CreateAccountScreenState())
     val state: State<CreateAccountScreenState> = _state
 
     fun onEvent(event: CreateAccountEvent) {
