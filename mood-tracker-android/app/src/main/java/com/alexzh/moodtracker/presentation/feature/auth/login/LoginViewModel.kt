@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexzh.moodtracker.R
 import com.alexzh.moodtracker.data.AuthRepository
+import com.alexzh.moodtracker.data.exception.InvalidCredentialsException
 import com.alexzh.moodtracker.data.exception.ServiceUnavailableException
 import com.alexzh.moodtracker.data.util.Result
+import com.alexzh.moodtracker.presentation.core.string.isValidEmail
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -60,6 +62,14 @@ class LoginViewModel(
                 )
                 return@launch
             }
+            if (!_state.value.email.isValidEmail()) {
+                _state.value = _state.value.copy(
+                    emailErrorMessage = R.string.genericError_emailIsNotValid_label,
+                    passwordErrorMessage = null,
+                    errorMessage = null
+                )
+                return@launch
+            }
             if (_state.value.password.length < 4) {
                 _state.value = _state.value.copy(
                     emailErrorMessage = null,
@@ -101,6 +111,7 @@ class LoginViewModel(
     private fun mapErrorToErrorMessage(ex: Exception): Int {
         return when (ex) {
             is ServiceUnavailableException -> R.string.genericError_serviceUnavailable_label
+            is InvalidCredentialsException -> R.string.loginScreen_error_invalidCredentials_label
             else -> R.string.genericError_somethingWentWrong_label
         }
     }

@@ -10,6 +10,7 @@ import com.alexzh.moodtracker.data.AuthRepository
 import com.alexzh.moodtracker.data.exception.ServiceUnavailableException
 import com.alexzh.moodtracker.data.exception.UserAlreadyExistException
 import com.alexzh.moodtracker.data.util.Result
+import com.alexzh.moodtracker.presentation.core.string.isValidEmail
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -17,7 +18,7 @@ class CreateAccountViewModel(
     private val authRepository: AuthRepository
 ): ViewModel() {
     // TODO: REMOVE IT
-    val NAME = "Alex.Z_42"
+    val NAME = "Alex"
     val EMAIL = "test-account@alexzh.com"
     val PASSWORD = "12345"
 
@@ -81,9 +82,9 @@ class CreateAccountViewModel(
                 )
                 return@launch
             }
-            if (!isEmailValid(_state.value.email)) {
+            if (!_state.value.email.isValidEmail()) {
                 _state.value = _state.value.copy(
-                    emailErrorMessage = R.string.createAccountScreen_error_emailIsNotValid_label,
+                    emailErrorMessage = R.string.genericError_emailIsNotValid_label,
                     nameErrorMessage = null,
                     passwordErrorMessage = null,
                     errorMessage = null
@@ -135,10 +136,5 @@ class CreateAccountViewModel(
             is ServiceUnavailableException -> R.string.genericError_serviceUnavailable_label
             else -> R.string.genericError_somethingWentWrong_label
         }
-    }
-
-    private fun isEmailValid(email: String): Boolean {
-        val pattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$".toRegex()
-        return email.matches(pattern)
     }
 }

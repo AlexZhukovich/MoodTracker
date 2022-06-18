@@ -56,7 +56,6 @@
     <string name="createAccountScreen_createAccount_button">CREATE ACCOUNT</string>
     <string name="createAccountScreen_error_userAlreadyExist_label">User already exists</string>
     <string name="createAccountScreen_error_emailIsTooShort_label">The \'Email\' should be at least four characters long</string>
-    <string name="createAccountScreen_error_emailIsNotValid_label">The \'Email\' value should be in [test]@[test].[test] format</string>
     <string name="createAccountScreen_error_nameIsTooShort_label">The \'Name\' should be at least four characters long</string>
     <string name="createAccountScreen_error_passwordIsTooShort_label">The \'Password\' should be at least four characters long</string>
 
@@ -73,6 +72,7 @@
     <string name="loginScreen_login_button">LOGIN</string>
     <string name="loginScreen_error_emailIsTooShort_label">The \'Email\' should be at least four characters long</string>
     <string name="loginScreen_error_passwordIsTooShort_label">The \'Password\' should be at least four characters long</string>
+    <string name="loginScreen_error_invalidCredentials_label">Invalid credentials</string>
 
     <!-- Generic text fields -->
     <string name="genericTextField_name_label">Name</string>
@@ -86,6 +86,7 @@
     <string name="genericTextField_password_contentDescription">Password</string>
 
     <!-- Generic errors -->
+    <string name="genericError_emailIsNotValid_label">The \'Email\' value should be in [test]@[test].[test] format</string>
     <string name="genericError_serviceUnavailable_label">Server is unavailable</string>
     <string name="genericError_unauthorizedUser_label">Please log in, again.</string>
     <string name="genericError_somethingWentWrong_label">Something went wrong</string>
