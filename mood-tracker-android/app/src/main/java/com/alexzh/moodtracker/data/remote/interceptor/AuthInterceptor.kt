@@ -10,7 +10,6 @@ class AuthInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val authRequest = chain.request().newBuilder().apply {
             sessionManager.getToken().value?.let { header("Authorization", "Bearer $it") }
-            sessionManager.getCookies()?.let { header("Cookie", it) }
         }.build()
         return chain.proceed(authRequest)
     }

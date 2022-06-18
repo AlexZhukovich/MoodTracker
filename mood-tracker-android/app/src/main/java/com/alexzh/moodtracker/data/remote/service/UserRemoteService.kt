@@ -20,12 +20,6 @@ interface UserRemoteService {
         @Body user: LoginUserModel
     ): Response<String>
 
-    @Headers("Content-Type: application/json")
-    @POST("users/logout")
-    suspend fun logout(): Response<Unit>
-
-    @GET("users/{userId}")
-    suspend fun getUserInfo(
-        @Path("userId") userId: Long,
-    ): Response<UserInfoModel>
+    @GET("users/me")
+    suspend fun getUserInfo(): Response<UserInfoModel>
 }

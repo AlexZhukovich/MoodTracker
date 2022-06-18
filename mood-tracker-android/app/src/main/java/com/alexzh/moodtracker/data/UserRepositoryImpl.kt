@@ -20,7 +20,7 @@ class UserRepositoryImpl(
         return flow {
             try {
                 emit(Result.Loading())
-                val response = remoteService.getUserInfo(userId)
+                val response = remoteService.getUserInfo()
                 val userInfo = response.body()
                 when {
                     response.code() == 200 && userInfo != null ->
