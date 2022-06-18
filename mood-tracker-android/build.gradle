@@ -19,7 +19,6 @@ buildscript {
         compose_material3_version = '1.0.0-alpha13'
         compose_constraintLayout_version = '1.0.1'
         accompanist_version = '0.24.9-beta'
-        kalendar_version = '1.0.0-RC5'
 
         junit_version = '4.13.2'
         junit_ext_version = '1.1.3'

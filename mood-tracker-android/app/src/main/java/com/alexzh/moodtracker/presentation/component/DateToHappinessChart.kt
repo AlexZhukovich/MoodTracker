@@ -7,11 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.*
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.translate
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalDensity
@@ -34,6 +31,7 @@ fun DateToHappinessChart(
     axisColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     showYAxis: Boolean = false,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
+    iconColor: Color = MaterialTheme.colorScheme.onSurface,
     chartIndicatorColor: Color = MaterialTheme.colorScheme.primary,
     iconSize: Dp = 20.dp,
     chartIndicatorTopCornerRadius: Dp = 4.dp,
@@ -55,8 +53,9 @@ fun DateToHappinessChart(
         }
     }
 
-    val iconPainterAngryIcon =
-        rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_emotion_angry))
+    val iconPainterAngryIcon = rememberVectorPainter(
+        ImageVector.vectorResource(R.drawable.ic_emotion_angry)
+    )
     val iconPainterConfusedIcon =
         rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_emotion_confused))
     val iconPainterNeutralIcon =
@@ -100,7 +99,10 @@ fun DateToHappinessChart(
                     top = size.height - timeDescriptionHeight - (i * chartHeight / 6f) - iconSizeInPx
                 ) {
                     with(painter) {
-                        draw(Size(iconSizeInPx, iconSizeInPx))
+                        draw(
+                            size = Size(iconSizeInPx, iconSizeInPx),
+                            colorFilter = ColorFilter.tint(iconColor)
+                        )
                     }
                 }
             }

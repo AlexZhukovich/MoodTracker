@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.alexzh.moodtracker.R
 import com.alexzh.moodtracker.presentation.component.DateToHappinessChart
 import com.alexzh.moodtracker.presentation.component.Section
+import kotlinx.coroutines.delay
 
 @ExperimentalMaterial3Api
 @Composable
@@ -54,6 +55,7 @@ fun StatisticsScreen(
         }
 
         LaunchedEffect(Unit) {
+            delay(400)
             viewModel.onEvent(StatisticsEvent.LoadCurrentWeek)
         }
     }

@@ -2,12 +2,12 @@ package com.alexzh.moodtracker.presentation.feature.settings
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -55,10 +55,11 @@ fun ProfileSettingItem(
             .clickable { onClick() }
             .padding(8.dp)
     ) {
-        Image(
-            modifier = Modifier.size(56.dp),
+        Icon(
+            modifier = Modifier.size(36.dp).align(Alignment.CenterVertically),
             painter = painterResource(icon),
-            contentDescription = stringResource(R.string.settingsScreen_profile_contentDescription)
+            contentDescription = stringResource(R.string.settingsScreen_profile_contentDescription),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Column(
             modifier = Modifier.fillMaxWidth()

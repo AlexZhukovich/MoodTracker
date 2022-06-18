@@ -38,7 +38,7 @@ class TodayViewModel(
 
     // TODO: ADD SUPPORT FOR 12 AND 24 HOURS FORMATS
     private fun fetchMoodHistory(date: LocalDate) {
-        _uiState.value = _uiState.value.copy(isLoading = true, items = emptyList())
+        _uiState.value = _uiState.value.copy(isLoading = true, date = date, items = emptyList())
         viewModelScope.launch {
             val startDate = ZonedDateTime.of(date, LocalTime.of(0, 0, 0), DATE_TIME_ZONE_UTC)
             val endDate = ZonedDateTime.of(date, LocalTime.of(23, 59, 59), DATE_TIME_ZONE_UTC)

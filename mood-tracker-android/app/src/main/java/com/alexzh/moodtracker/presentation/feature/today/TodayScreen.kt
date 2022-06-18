@@ -1,6 +1,7 @@
 package com.alexzh.moodtracker.presentation.feature.today
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,13 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alexzh.moodtracker.R
 import com.alexzh.moodtracker.presentation.component.Section
+import com.alexzh.moodtracker.presentation.component.calendar.WeekCalendar
 import com.alexzh.moodtracker.presentation.feature.today.model.EmotionHistoryItem
 import com.google.accompanist.flowlayout.FlowRow
-import com.himanshoe.kalendar.common.KalendarSelector
-import com.himanshoe.kalendar.common.KalendarStyle
-import com.himanshoe.kalendar.common.theme.KalendarShape
-import com.himanshoe.kalendar.ui.Kalendar
-import com.himanshoe.kalendar.ui.KalendarType
 import java.util.*
 
 @ExperimentalFoundationApi
@@ -38,22 +35,13 @@ fun TodayScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            Kalendar(
-                kalendarStyle = KalendarStyle(
-                    kalendarBackgroundColor = MaterialTheme.colorScheme.surface,
-                    kalendarColor = MaterialTheme.colorScheme.surface,
-                    kalendarSelector = KalendarSelector.Rounded(
-                        defaultColor = MaterialTheme.colorScheme.surface,
-                        selectedColor = MaterialTheme.colorScheme.inversePrimary,
-                        todayColor = MaterialTheme.colorScheme.primaryContainer
-                    )
-                ),
-                kalendarType = KalendarType.Oceanic(KalendarShape.DefaultRectangle, startDate = uiState.date.minusDays(3)),
-                selectedDay = uiState.date,
-                onCurrentDayClick = { day, event ->
-                    viewModel.onEvent(TodayEvent.OnDateChange(day))
-                }
-            )
+            Column {
+                WeekCalendar(
+                    startDate = uiState.date.minusDays(6),
+                    selectedDate = uiState.date,
+                    onSelectedDateChange = { viewModel.onEvent(TodayEvent.OnDateChange(it)) }
+                )
+            }
         },
         floatingActionButton = {
              ExtendedFloatingActionButton(
