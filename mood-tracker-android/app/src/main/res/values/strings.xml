@@ -58,7 +58,6 @@
     <string name="createAccountScreen_error_emailIsTooShort_label">The \'Email\' should be at least four characters long</string>
     <string name="createAccountScreen_error_emailIsNotValid_label">The \'Email\' value should be in [test]@[test].[test] format</string>
     <string name="createAccountScreen_error_nameIsTooShort_label">The \'Name\' should be at least four characters long</string>
-    <string name="createAccountScreen_error_nameIsNotValid_label">The \'Name\' should consist of digits, letters, dots or underscores</string>
     <string name="createAccountScreen_error_passwordIsTooShort_label">The \'Password\' should be at least four characters long</string>
 
     <!-- Login -->

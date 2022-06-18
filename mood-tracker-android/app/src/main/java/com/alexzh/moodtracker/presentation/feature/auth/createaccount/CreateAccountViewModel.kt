@@ -72,15 +72,6 @@ class CreateAccountViewModel(
                 )
                 return@launch
             }
-            if (!isNameValid(_state.value.name)) {
-                _state.value = _state.value.copy(
-                    emailErrorMessage = null,
-                    nameErrorMessage = R.string.createAccountScreen_error_nameIsNotValid_label,
-                    passwordErrorMessage = null,
-                    errorMessage = null
-                )
-                return@launch
-            }
             if (_state.value.email.length < 4) {
                 _state.value = _state.value.copy(
                     emailErrorMessage = R.string.createAccountScreen_error_emailIsTooShort_label,
@@ -149,10 +140,5 @@ class CreateAccountViewModel(
     private fun isEmailValid(email: String): Boolean {
         val pattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$".toRegex()
         return email.matches(pattern)
-    }
-
-    private fun isNameValid(name: String): Boolean {
-        val pattern = "[a-zA-Z0-9_.]+".toRegex()
-        return name.matches(pattern)
     }
 }

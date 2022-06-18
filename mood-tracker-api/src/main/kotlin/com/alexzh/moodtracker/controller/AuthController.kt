@@ -31,7 +31,6 @@ class AuthController(
             params.email.length < MIN_EMAIL_LENGTH -> AuthResponse.Error("The 'email' should be at least $MIN_EMAIL_LENGTH characters long")
             !params.email.isValid() -> AuthResponse.Error("Email value should be in [test]@[test].[test] format")
             params.username.length < MIN_USERNAME_LENGTH -> AuthResponse.Error("The 'username' should be at least $MIN_USERNAME_LENGTH characters long")
-            !params.username.isValid() -> AuthResponse.Error("The 'username` should consist of digits, letters, dots or underscores")
             params.password.length < MIN_PASSWORD_LENGTH -> AuthResponse.Error("The 'password' should be at least $MIN_PASSWORD_LENGTH characters long")
             else -> {
                 try {
