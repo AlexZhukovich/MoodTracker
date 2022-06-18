@@ -5,12 +5,13 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Delete
@@ -128,147 +129,136 @@ private fun LoadedSuccessfullyScreen(
     val errorMessage = stringResource(R.string.addMoodScreen_error_selectEmotionAndActivity)
     val listState = rememberLazyListState()
 
-    LazyColumn(
+    Column(
         modifier = Modifier.fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(
                 start = 0.dp,
                 top = paddingValues.calculateTopPadding(),
                 end = 0.dp,
                 bottom = paddingValues.calculateBottomPadding()
-            ),
-        state = listState
+            )
     ) {
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxWidth().height(72.dp).padding(bottom = 8.dp),
+            columns = GridCells.Fixed(5)
+        ) {
+            items(state.emotions) { emotion ->
+                Icon(
+                    modifier = Modifier.size(60.dp).padding(4.dp)
+                        .clip(shape = CircleShape)
+                        .clickable {
+                            viewModel.onEvent(AddMoodEvent.OnEmotionChange(emotion.emotionId))
+                        },
+                    painter = painterResource(emotion.iconRes),
+                    contentDescription = null,
+                    tint = if (emotion.emotionId == selectedEmotion?.emotionId) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
 
-        item {
-            LazyVerticalGrid(
-                modifier = Modifier.fillMaxWidth().height(72.dp).padding(bottom = 8.dp),
-                columns = GridCells.Fixed(5)
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            OutlineDatePicker(
+                modifier = Modifier.fillMaxWidth().weight(1.0f),
+                label = { Text(stringResource(R.string.addMoodScreen_date_label)) },
+                value = state.date,
+                onValueChange = { viewModel.onEvent(AddMoodEvent.OnDateChange(it)) }
+            )
+            OutlineTimePicker(
+                modifier = Modifier.fillMaxWidth().weight(1.0f),
+                label = { Text(stringResource(R.string.addMoodScreen_time_label)) },
+                value = state.time,
+                onValueChange = { viewModel.onEvent(AddMoodEvent.OnTimeChange(it)) }
+            )
+        }
+
+        AnimatedVisibility(
+            visible = selectedEmotion != null,
+            enter = fadeIn()
+        ) {
+            FlowRow(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(8.dp),
+                mainAxisSpacing = 8.dp,
+                crossAxisSpacing = 0.dp,
             ) {
-                items(state.emotions) { emotion ->
-                    Icon(
-                        modifier = Modifier.size(60.dp).padding(4.dp)
-                            .clip(shape = CircleShape)
-                            .clickable {
-                                viewModel.onEvent(AddMoodEvent.OnEmotionChange(emotion.emotionId))
-                            },
-                        painter = painterResource(emotion.iconRes),
-                        contentDescription = null,
-                        tint = if (emotion.emotionId == selectedEmotion?.emotionId) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                state.activities.forEach { activity ->
+                    FilterChip(
+                        selected = activity.isSelected,
+                        label = {
+                            Text(
+                                text = activity.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
+                                style = MaterialTheme.typography.bodySmall,
+                            )
+                        },
+                        onClick = {
+                            viewModel.onEvent(AddMoodEvent.OnActivityChange(activity.id))
+                        },
+                        enabled = true,
+                        leadingIcon = {
+                            Icon(
+                                modifier = Modifier.size(18.dp),
+                                painter = painterResource(activity.icon),
+                                contentDescription = null
+                            )
+                        },
+                        selectedIcon = {
+                            Icon(
+                                modifier = Modifier.size(18.dp),
+                                painter = painterResource(R.drawable.ic_check),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        },
                     )
                 }
             }
         }
 
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                OutlineDatePicker(
-                    modifier = Modifier.fillMaxWidth().weight(1.0f),
-                    label = { Text(stringResource(R.string.addMoodScreen_date_label)) },
-                    value = state.date,
-                    onValueChange = { viewModel.onEvent(AddMoodEvent.OnDateChange(it)) }
-                )
-                OutlineTimePicker(
-                    modifier = Modifier.fillMaxWidth().weight(1.0f),
-                    label = { Text(stringResource(R.string.addMoodScreen_time_label)) },
-                    value = state.time,
-                    onValueChange = { viewModel.onEvent(AddMoodEvent.OnTimeChange(it)) }
-                )
-            }
-        }
+        AnimatedVisibility(
+            visible = selectedEmotion != null,
+            enter = fadeIn()
+        ) {
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth().padding(8.dp)
+                    .onFocusEvent {
+                        if (it.isFocused) {
 
-        item {
-            AnimatedVisibility(
-                visible = selectedEmotion != null,
-                enter = fadeIn()
-            ) {
-                FlowRow(
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(8.dp),
-                    mainAxisSpacing = 8.dp,
-                    crossAxisSpacing = 0.dp,
-                ) {
-                    state.activities.forEach { activity ->
-                        FilterChip(
-                            selected = activity.isSelected,
-                            label = {
-                                Text(
-                                    text = activity.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
-                                    style = MaterialTheme.typography.bodySmall,
-                                )
-                            },
-                            onClick = {
-                                viewModel.onEvent(AddMoodEvent.OnActivityChange(activity.id))
-                            },
-                            enabled = true,
-                            leadingIcon = {
-                                Icon(
-                                    modifier = Modifier.size(18.dp),
-                                    painter = painterResource(activity.icon),
-                                    contentDescription = null
-                                )
-                            },
-                            selectedIcon = {
-                                Icon(
-                                    modifier = Modifier.size(18.dp),
-                                    painter = painterResource(R.drawable.ic_check),
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary
-                                )
-                            },
-                        )
-                    }
-                }
-            }
-        }
-
-        item {
-            AnimatedVisibility(
-                visible = selectedEmotion != null,
-                enter = fadeIn()
-            ) {
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp)
-                        .onFocusEvent {
-                            if (it.isFocused) {
-
-                                scope.launch {
-                                    delay(200)
-                                    listState.animateScrollToItem(3)
-
-                                }
-                            }
-                        },
-                    value = state.note,
-                    onValueChange = { viewModel.onEvent(AddMoodEvent.OnNoteChange(it)) },
-                    label = { Text(stringResource(R.string.addMoodScreen_note_label)) }
-                )
-            }
-        }
-
-        item {
-            AnimatedVisibility(
-                visible = selectedEmotion != null,
-                enter = fadeIn()
-            ) {
-                Button(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp),
-                    onClick = {
-                        val selectedActions = state.activities.filter { it.isSelected }
-                        if (selectedEmotion != null && selectedActions.isNotEmpty()) {
-                            viewModel.onEvent(AddMoodEvent.Save)
-                        } else {
                             scope.launch {
-                                snackbarState.showSnackbar(errorMessage)
+                                delay(200)
+                                listState.animateScrollToItem(3)
+
                             }
                         }
+                    },
+                value = state.note,
+                onValueChange = { viewModel.onEvent(AddMoodEvent.OnNoteChange(it)) },
+                label = { Text(stringResource(R.string.addMoodScreen_note_label)) }
+            )
+        }
+
+        AnimatedVisibility(
+            visible = selectedEmotion != null,
+            enter = fadeIn()
+        ) {
+            Button(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                onClick = {
+                    val selectedActions = state.activities.filter { it.isSelected }
+                    if (selectedEmotion != null && selectedActions.isNotEmpty()) {
+                        viewModel.onEvent(AddMoodEvent.Save)
+                    } else {
+                        scope.launch {
+                            snackbarState.showSnackbar(errorMessage)
+                        }
                     }
-                ) {
-                    Text(stringResource(R.string.addMoodScreen_save_title))
                 }
+            ) {
+                Text(stringResource(R.string.addMoodScreen_save_title))
             }
         }
     }
