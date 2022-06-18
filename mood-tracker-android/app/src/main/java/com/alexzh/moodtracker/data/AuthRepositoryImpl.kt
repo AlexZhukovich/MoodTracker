@@ -12,7 +12,6 @@ import com.alexzh.moodtracker.data.util.Result
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import okhttp3.Headers
 import java.net.ConnectException
 
 class AuthRepositoryImpl(
@@ -39,7 +38,6 @@ class AuthRepositoryImpl(
                         val token = response.body()
                         token?.let {
                             sessionManager.saveToken(JwtToken(it))
-                            sessionManager.saveCookies(response.headers().cookies())
                         }
 
                         Result.Success(JwtToken(token))
@@ -69,7 +67,6 @@ class AuthRepositoryImpl(
                     val token = response.body()
                     token?.let {
                         sessionManager.saveToken(JwtToken(it))
-                        sessionManager.saveCookies(response.headers().cookies())
                     }
                     emit(Result.Success(JwtToken(token)))
                 } else {
@@ -87,14 +84,10 @@ class AuthRepositoryImpl(
             emit(Result.Loading())
             try {
                 sessionManager.saveToken(JwtToken(null))
-                sessionManager.saveCookies(null)
                 emit(Result.Success(Unit))
             } catch (ex: ConnectException) {
                 emit(Result.Error(ServiceUnavailableException()))
             }
         }
     }
-
-    private fun Headers.cookies(): String? =
-        this["Set-Cookie"]?.split(";")?.get(0)
 }
