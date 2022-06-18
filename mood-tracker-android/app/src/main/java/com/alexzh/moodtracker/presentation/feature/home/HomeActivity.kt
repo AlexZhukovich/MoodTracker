@@ -39,6 +39,7 @@ class HomeActivity : ComponentActivity() {
             val items = listOf(
                 Screens.TodayScreen.toNavItem(),
                 Screens.StatisticsScreen.toNavItem(),
+                Screens.SettingsScreen.toNavItem()
             )
 
             val isBottomNavBarDisplayed = rememberSaveable { mutableStateOf(true) }

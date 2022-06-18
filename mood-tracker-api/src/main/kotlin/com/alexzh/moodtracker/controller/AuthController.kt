@@ -5,11 +5,9 @@ import com.alexzh.moodtracker.auth.JwtService
 import com.alexzh.moodtracker.data.UserRepository
 import com.alexzh.moodtracker.data.exception.UserAlreadyExistException
 import com.alexzh.moodtracker.data.model.User
-import com.alexzh.moodtracker.model.UserSession
 import com.alexzh.moodtracker.model.request.param.CreateUserRequestParams
 import com.alexzh.moodtracker.model.request.param.LoginRequestParams
 import com.alexzh.moodtracker.model.response.AuthResponse
-import io.ktor.server.sessions.*
 
 class AuthController(
     private val encryptor: Encryptor,
@@ -24,14 +22,12 @@ class AuthController(
     }
 
     suspend fun createUser(
-        params: CreateUserRequestParams,
-        currentSession: CurrentSession
+        params: CreateUserRequestParams
     ): AuthResponse {
         return when {
             params.email.length < MIN_EMAIL_LENGTH -> AuthResponse.Error("The 'email' should be at least $MIN_EMAIL_LENGTH characters long")
             !params.email.isValid() -> AuthResponse.Error("Email value should be in [test]@[test].[test] format")
             params.username.length < MIN_USERNAME_LENGTH -> AuthResponse.Error("The 'username' should be at least $MIN_USERNAME_LENGTH characters long")
-            !params.username.isValid() -> AuthResponse.Error("The 'username` should consist of digits, letters, dots or underscores")
             params.password.length < MIN_PASSWORD_LENGTH -> AuthResponse.Error("The 'password' should be at least $MIN_PASSWORD_LENGTH characters long")
             else -> {
                 try {
@@ -43,7 +39,6 @@ class AuthController(
                         )
                     )
                     if (user != null) {
-                        currentSession.set(UserSession(user.id))
                         AuthResponse.Created(jwtService.generateToken(user))
                     } else throw java.lang.Exception()
                 } catch (ex: UserAlreadyExistException) {
@@ -56,8 +51,7 @@ class AuthController(
     }
 
     suspend fun login(
-        params: LoginRequestParams,
-        currentSession: CurrentSession
+        params: LoginRequestParams
     ): AuthResponse {
         return when {
             params.email.length < MIN_EMAIL_LENGTH -> AuthResponse.Error("The 'email' should be at least $MIN_EMAIL_LENGTH characters long")
@@ -65,7 +59,6 @@ class AuthController(
             else -> {
                 val user = userRepository.getUserByEmailAndPassword(params.email.value, encryptor.encrypt(params.password))
                 if (user != null) {
-                    currentSession.set(UserSession(user.id))
                     AuthResponse.Success(jwtService.generateToken(user))
                 } else {
                     AuthResponse.Error("Invalid credentials")

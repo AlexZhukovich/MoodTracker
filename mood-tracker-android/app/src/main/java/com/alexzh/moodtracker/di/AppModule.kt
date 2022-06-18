@@ -1,11 +1,15 @@
 package com.alexzh.moodtracker.di
 
 import com.alexzh.moodtracker.MoodTrackerDatabase
-import com.alexzh.moodtracker.data.EmotionHistoryRepository
-import com.alexzh.moodtracker.data.EmotionHistoryRepositoryImpl
+import com.alexzh.moodtracker.data.*
 import com.alexzh.moodtracker.data.local.LocalEmotionHistoryDataSource
 import com.alexzh.moodtracker.data.local.LocalEmotionHistoryDataSourceImpl
 import com.alexzh.moodtracker.data.local.adapter.zonedDateTimeAdapter
+import com.alexzh.moodtracker.data.local.session.AuthSharedPreferenceFactory
+import com.alexzh.moodtracker.data.local.session.SessionManager
+import com.alexzh.moodtracker.data.local.session.SessionManagerImpl
+import com.alexzh.moodtracker.data.remote.interceptor.AuthInterceptor
+import com.alexzh.moodtracker.data.remote.service.UserRemoteServiceFactory
 import com.alexzh.moodtracker.presentation.core.date.DefaultTimeFormatter
 import com.alexzh.moodtracker.presentation.core.date.TimeFormatter
 import com.alexzh.moodtracker.presentation.core.icon.ActivityIconMapper
@@ -13,6 +17,9 @@ import com.alexzh.moodtracker.presentation.core.icon.DefaultActivityIconMapper
 import com.alexzh.moodtracker.presentation.core.icon.DefaultEmotionIconMapper
 import com.alexzh.moodtracker.presentation.core.icon.EmotionIconMapper
 import com.alexzh.moodtracker.presentation.feature.addmood.AddMoodViewModel
+import com.alexzh.moodtracker.presentation.feature.auth.createaccount.CreateAccountViewModel
+import com.alexzh.moodtracker.presentation.feature.auth.login.LoginViewModel
+import com.alexzh.moodtracker.presentation.feature.profile.ProfileViewModel
 import com.alexzh.moodtracker.presentation.feature.stats.StatisticsViewModel
 import com.alexzh.moodtracker.presentation.feature.today.TodayViewModel
 import com.alexzh.moodtrackerdb.EmotionHistoryEntity
@@ -50,6 +57,20 @@ val dataModule = module {
         )
     }
     factory<EmotionHistoryRepository> { EmotionHistoryRepositoryImpl(get()) }
+
+    single { AuthInterceptor(sessionManager = get()) }
+    factory { UserRemoteServiceFactory().createMoodTrackerRemoteService(true, get()) }
+
+    single(named("authSharedPrefs")) {
+        AuthSharedPreferenceFactory.createAuthSharedPreferences(androidContext())
+    }
+    single<SessionManager> {
+        SessionManagerImpl(
+            sharedPreferences = get(named("authSharedPrefs"))
+        )
+    }
+    factory<AuthRepository> { AuthRepositoryImpl(remoteService = get(), sessionManager = get()) }
+    factory<UserRepository> { UserRepositoryImpl(remoteService = get()) }
 }
 
 val appModule = module {
@@ -75,6 +96,25 @@ val appModule = module {
 
     viewModel {
         StatisticsViewModel(
+            get()
+        )
+    }
+
+    viewModel {
+        ProfileViewModel(
+            get(),
+            get()
+        )
+    }
+
+    viewModel {
+        CreateAccountViewModel(
+            get()
+        )
+    }
+
+    viewModel {
+        LoginViewModel(
             get()
         )
     }

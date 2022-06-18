@@ -5,7 +5,6 @@ import com.alexzh.moodtracker.auth.EncryptorImpl
 import com.alexzh.moodtracker.auth.JwtService
 import com.alexzh.moodtracker.auth.JwtServiceImpl
 import com.alexzh.moodtracker.controller.AuthController
-import com.alexzh.moodtracker.controller.UserInfoController
 import com.alexzh.moodtracker.data.UserRepository
 import com.alexzh.moodtracker.data.UserRepositoryImpl
 import com.alexzh.moodtracker.data.database.DatabaseConnector
@@ -31,11 +30,6 @@ val appModule = module {
         AuthController(
             encryptor = get(),
             jwtService = get(),
-            userRepository = get()
-        )
-    }
-    factory {
-        UserInfoController(
             userRepository = get()
         )
     }

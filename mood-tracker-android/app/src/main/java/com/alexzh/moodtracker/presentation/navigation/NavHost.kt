@@ -14,6 +14,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.alexzh.moodtracker.presentation.feature.addmood.AddMoodScreen
+import com.alexzh.moodtracker.presentation.feature.auth.createaccount.CreateAccountScreen
+import com.alexzh.moodtracker.presentation.feature.auth.login.LoginScreen
+import com.alexzh.moodtracker.presentation.feature.profile.ProfileScreen
+import com.alexzh.moodtracker.presentation.feature.settings.SettingsScreen
 import com.alexzh.moodtracker.presentation.feature.stats.StatisticsScreen
 import com.alexzh.moodtracker.presentation.feature.today.TodayScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -48,15 +52,6 @@ fun AppNavigation(
             )
         }
 
-        composable(route = Screens.StatisticsScreen.route) {
-            LaunchedEffect(Unit) {
-                isBottomBarDisplayed.value = true
-            }
-            StatisticsScreen(
-                viewModel = get()
-            )
-        }
-
         composable(
             route = Screens.AddMoodScreen.route,
             arguments = listOf(
@@ -72,6 +67,74 @@ fun AppNavigation(
                 emotionHistoryId = it.arguments?.getLong(Screens.AddMoodScreen.paramName) ?: -1,
                 viewModel = get(),
                 onBack = { navController.navigateUp() }
+            )
+        }
+
+        composable(route = Screens.StatisticsScreen.route) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = true
+            }
+            StatisticsScreen(
+                viewModel = get()
+            )
+        }
+
+        composable(route = Screens.SettingsScreen.route) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = true
+            }
+            SettingsScreen(
+                onProfile = { navController.navigate(Screens.ProfileScreen.route) }
+            )
+        }
+
+        composable(route = Screens.ProfileScreen.route) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = false
+            }
+            ProfileScreen(
+                viewModel = get(),
+                onCreateAccount = { navController.navigate(Screens.CreateAccountScreen.route) },
+                onLogin = { navController.navigate(Screens.LoginScreen.createRoute(Screens.ProfileScreen.route)) },
+                onBack = { navController.navigateUp() }
+            )
+        }
+
+        composable(route = Screens.CreateAccountScreen.route) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = false
+            }
+            CreateAccountScreen(
+                viewModel = get(),
+                onLogin = { navController.navigate(Screens.LoginScreen.route) },
+                onCreateAccountSuccess = { navController.navigate(Screens.TodayScreen.route) },
+                onContinueWithoutAccount = { navController.navigate(Screens.TodayScreen.route) }
+            )
+        }
+
+        composable(
+            route = Screens.LoginScreen.route,
+            arguments = listOf(
+                navArgument(Screens.LoginScreen.paramName) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = false
+            }
+            LoginScreen(
+                viewModel = get(),
+                redirectTo = it.arguments?.getString(Screens.LoginScreen.paramName) ?: Screens.LoginScreen.NO_REDIRECT,
+                onLoginSuccess = { redirectTo ->
+                    if (redirectTo != Screens.LoginScreen.NO_REDIRECT) {
+                        navController.navigate(redirectTo) {
+                            popUpTo(redirectTo) { inclusive = true }
+                        }
+                    } else navController.navigate(Screens.TodayScreen.route)
+                },
+                onCreateAccount = { navController.navigate(Screens.CreateAccountScreen.route) },
+                onContinueWithoutAccount = { navController.navigate(Screens.TodayScreen.route) }
             )
         }
     }

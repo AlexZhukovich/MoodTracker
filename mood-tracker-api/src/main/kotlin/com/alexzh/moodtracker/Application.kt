@@ -17,10 +17,6 @@ fun Application.module() {
     configureSerialization()
     configureHTTP()
     configureMonitoring()
-    configureSession(
-        sessionEncryptKey = System.getenv("SESSION_ENCRYPT_KEY"),
-        sessionAuthKey = System.getenv("SESSION_AUTH_KEY")
-    )
     configureAuthentication()
 
     val databaseConnector: DatabaseConnector = get(DatabaseConnector::class.java)

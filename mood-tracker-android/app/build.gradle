@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "com.alexzh.moodtracker"
-        minSdk 21
+        minSdk 23
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -60,18 +60,25 @@ dependencies {
     implementation "androidx.core:core-ktx:$core_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.activity:activity-compose:$compose_activity_version"
+    implementation "androidx.preference:preference-ktx:$preference_version"
+    implementation "androidx.security:security-crypto:$security_version"
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material3:material3:$compose_material3_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
-    implementation "com.himanshoe:kalendar:$kalendar_version"
+    implementation "androidx.constraintlayout:constraintlayout-compose:$compose_constraintLayout_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
     implementation "com.squareup.sqldelight:android-driver:$sqldelight_version"
     implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sqldelight_version"
+    implementation "com.google.code.gson:gson:$gson_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "com.squareup.sqldelight:sqlite-driver:$sqldelight_version"
