@@ -28,6 +28,7 @@ fun ProfileScreen(
     onBack: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val uiState by viewModel.state
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -44,11 +45,13 @@ fun ProfileScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { viewModel.onEvent(ProfileEvent.LogOut) }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_logout),
-                            contentDescription = stringResource(R.string.profileScreen_logout_contentDescription)
-                        )
+                    if (uiState.userInfoModel != null) {
+                        IconButton(onClick = { viewModel.onEvent(ProfileEvent.LogOut) }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_logout),
+                                contentDescription = stringResource(R.string.profileScreen_logout_contentDescription)
+                            )
+                        }
                     }
                 }
             )
@@ -70,8 +73,6 @@ fun ProfileScreen(
                 ),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            val uiState by viewModel.state
-
             when {
                 uiState.loading -> LoadingScreen()
                 uiState.userInfoModel != null -> {
