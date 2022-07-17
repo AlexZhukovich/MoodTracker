@@ -118,14 +118,14 @@ private fun ErrorScreen(
             modifier = Modifier.fillMaxWidth(),
             onClick = { onCreateAccount() }
         ) {
-            Text("CREATE ACCOUNT SCREEN")
+            Text(stringResource(R.string.profileScreen_createAccount_button))
         }
 
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = { onLogin() }
         ) {
-            Text("LOGIN SCREEN")
+            Text(stringResource(R.string.profileScreen_login_button))
         }
 
         errorMessage?.let {
