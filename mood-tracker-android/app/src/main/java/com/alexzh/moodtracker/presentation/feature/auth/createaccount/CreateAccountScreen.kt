@@ -17,12 +17,12 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.alexzh.moodtracker.R
-import com.alexzh.moodtracker.presentation.component.LoadingButton
-import com.alexzh.moodtracker.presentation.component.text.EmailOutlinedTextFieldWithError
-import com.alexzh.moodtracker.presentation.component.text.NameOutlinedTextFieldWithError
-import com.alexzh.moodtracker.presentation.component.text.PasswordOutlinedTextFieldWithError
-import com.alexzh.moodtracker.presentation.component.text.TextRedirect
-import com.alexzh.moodtracker.presentation.core.res.highlightLastItem
+import com.alexzh.moodtracker.design.common.highlightLastItem
+import com.alexzh.moodtracker.design.component.button.loading.LoadingButton
+import com.alexzh.moodtracker.design.component.text.TextRedirect
+import com.alexzh.moodtracker.design.component.text.EmailOutlinedTextFieldWithError
+import com.alexzh.moodtracker.design.component.text.NameOutlinedTextFieldWithError
+import com.alexzh.moodtracker.design.component.text.PasswordOutlinedTextFieldWithError
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api

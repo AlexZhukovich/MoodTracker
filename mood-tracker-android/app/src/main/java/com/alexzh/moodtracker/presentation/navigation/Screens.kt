@@ -3,6 +3,7 @@ package com.alexzh.moodtracker.presentation.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.alexzh.moodtracker.R
+import com.alexzh.moodtracker.design.R as desR
 
 private const val FULL_TODAY_SCREEN_ROUTE = "todayScreen"
 private const val FULL_ADD_MOOD_SCREEN_ROUTE = "${Screens.AddMoodScreen.prefix}/{${Screens.AddMoodScreen.paramName}}"
@@ -17,7 +18,7 @@ sealed class Screens(val route: String) {
         fun toNavItem(): NavItem {
             return NavItem(
                 title = R.string.navigation_today_label,
-                icon = R.drawable.ic_nav_today,
+                icon = desR.drawable.ic_nav_today,
                 route = FULL_TODAY_SCREEN_ROUTE
             )
         }

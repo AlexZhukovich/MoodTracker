@@ -15,10 +15,6 @@
     <string name="navigation_statistics_label">Stats</string>
     <string name="navigation_settings_label">Settings</string>
 
-    <!-- General accessibility -->
-    <string name="passwordField_hidePassword_label">Hide password</string>
-    <string name="passwordField_showPassword_label">Show password</string>
-
     <!-- Today -->
     <string name="todayScreen_add_label">Add</string>
     <string name="todayScreen_emotions_label">Emotions</string>
@@ -36,9 +32,6 @@
     <!-- Statistics -->
     <string name="statisticsScreen_title">Statistics</string>
     <string name="statisticsScreen_moodChart_label">Mood Chart</string>
-    <string name="statisticsScreen_currentWeek_label">Current week</string>
-    <string name="statisticsScreen_previousWeek_label">Previous week</string>
-    <string name="statisticsScreen_nextWeek_label">Next week</string>
     <string name="statisticsScreen_noData_label">"No data"</string>
 
     <!-- Profile -->
@@ -83,17 +76,6 @@
     <string name="loginScreen_error_emailIsTooShort_label">The \'Email\' should be at least four characters long</string>
     <string name="loginScreen_error_passwordIsTooShort_label">The \'Password\' should be at least four characters long</string>
     <string name="loginScreen_error_invalidCredentials_label">Invalid credentials</string>
-
-    <!-- Generic text fields -->
-    <string name="genericTextField_name_label">Name</string>
-    <string name="genericTextField_name_placeholder">Enter your name</string>
-    <string name="genericTextField_name_contentDescription">Name</string>
-    <string name="genericTextField_email_label">Email</string>
-    <string name="genericTextField_email_placeholder">Enter your email</string>
-    <string name="genericTextField_email_contentDescription">Email</string>
-    <string name="genericTextField_password_label">Password</string>
-    <string name="genericTextField_password_placeholder">Enter your password</string>
-    <string name="genericTextField_password_contentDescription">Password</string>
 
     <!-- Generic errors -->
     <string name="genericError_emailIsNotValid_label">The \'Email\' value should be in [test]@[test].[test] format</string>

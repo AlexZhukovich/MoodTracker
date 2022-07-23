@@ -3,6 +3,7 @@ package com.alexzh.moodtracker.presentation.feature.home
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInVertically
@@ -22,14 +23,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.alexzh.moodtracker.presentation.navigation.AppNavigation
 import com.alexzh.moodtracker.presentation.navigation.Screens
-import com.alexzh.moodtracker.presentation.theme.AppTheme
+import com.alexzh.moodtracker.design.theme.AppTheme
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 @ExperimentalMaterial3Api
-class HomeActivity : ComponentActivity() {
+class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

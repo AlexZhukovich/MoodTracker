@@ -1,7 +1,6 @@
 package com.alexzh.moodtracker.presentation.feature.today
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alexzh.moodtracker.R
-import com.alexzh.moodtracker.presentation.component.Section
-import com.alexzh.moodtracker.presentation.component.calendar.WeekCalendar
+import com.alexzh.moodtracker.design.component.section.Section
+import com.alexzh.moodtracker.design.component.calendar.week.WeekCalendar
 import com.alexzh.moodtracker.presentation.feature.today.model.EmotionHistoryItem
 import com.google.accompanist.flowlayout.FlowRow
 import java.util.*
