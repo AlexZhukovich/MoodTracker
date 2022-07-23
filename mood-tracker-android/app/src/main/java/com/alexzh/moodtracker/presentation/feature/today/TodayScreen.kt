@@ -182,8 +182,7 @@ private fun EmotionHistoryItem(
 
             Text(
                 text = item.formattedDate, style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                modifier = Modifier.padding(start = 16.dp)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
         }
     }
