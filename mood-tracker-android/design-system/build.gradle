@@ -5,8 +5,8 @@ plugins {
 }
 
 android {
+    namespace 'com.alexzh.moodtracker.design'
     compileSdk 32
-
     defaultConfig {
         minSdk 23
         targetSdk 32

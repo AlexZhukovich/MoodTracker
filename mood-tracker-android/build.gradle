@@ -1,7 +1,7 @@
 buildscript {
     ext {
         kotlin_version = '1.6.21'
-        grandle_plugin_version = '7.2.1'
+        grandle_plugin_version = '7.4.2'
         core_version = '1.7.0'
         lifecycle_version = '2.4.1'
         preference_version = '1.2.0'
