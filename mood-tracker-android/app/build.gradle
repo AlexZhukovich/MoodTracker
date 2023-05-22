@@ -1,7 +1,7 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'com.squareup.sqldelight'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.sqldelight)
 }
 
 sqldelight {
@@ -46,7 +46,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion libs.versions.androidxComposeCompiler.get()
     }
     packagingOptions {
         resources {
@@ -56,51 +56,46 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugarJdkLibs_version"
+    def composeBom = platform(libs.androidx.compose.bom)
+    coreLibraryDesugaring libs.desugar.jdk.libs
 
-    implementation "androidx.core:core-ktx:$core_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    implementation "androidx.activity:activity-compose:$compose_activity_version"
-    implementation "androidx.preference:preference-ktx:$preference_version"
-    implementation "androidx.security:security-crypto:$security_version"
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "com.google.android.material:material:$material_version"
-    implementation "androidx.compose.material3:material3:$compose_material3_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
-    implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
-    implementation "androidx.constraintlayout:constraintlayout-compose:$compose_constraintLayout_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
-    implementation "com.squareup.sqldelight:android-driver:$sqldelight_version"
-    implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sqldelight_version"
-    implementation "com.google.code.gson:gson:$gson_version"
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation libs.androidx.core.ktx
+    implementation(libs.androidx.preference)
+    implementation(libs.androidx.security.crypto)
+    implementation libs.google.android.material
+    implementation(composeBom)
+    implementation libs.bundles.androidx.compose.ui
+    implementation(libs.accompanist.navigation.animation)
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.sqldelight.android.driver)
+    implementation(libs.sqldelight.coroutines.extensions.jvm)
+    implementation(libs.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
     implementation project(':design-system')
 
-    testImplementation "junit:junit:$junit_version"
-    testImplementation "com.squareup.sqldelight:sqlite-driver:$sqldelight_version"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-    testImplementation "com.google.truth:truth:$truth_version"
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
-    androidTestImplementation "androidx.test:runner:$androidXTest_version"
-    androidTestImplementation "androidx.test:rules:$androidXTest_version"
-    androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
-    androidTestImplementation "androidx.arch.core:core-testing:$androidXCoreTesting_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-    androidTestImplementation "io.insert-koin:koin-test:$koin_version"
-    androidTestImplementation "io.insert-koin:koin-test-junit4:$koin_version"
-    androidTestImplementation "com.squareup.sqldelight:sqlite-driver:$sqldelight_version"
-    androidTestImplementation "com.squareup.sqldelight:android-driver:$sqldelight_version"
-    androidTestImplementation "com.github.sergio-sastre:AndroidUiTestingUtils:$androidUiTestingUtils_version"
-    androidTestImplementation "com.google.testparameterinjector:test-parameter-injector:$testParameterInjector_version"
+    testImplementation(libs.junit)
+    testImplementation(libs.sqldelight.sqlite.driver)
+    testImplementation(libs.truth)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    androidTestImplementation(composeBom)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.bundles.androidx.compose.test)
+    androidTestImplementation(libs.koin.test)
+    androidTestImplementation(libs.koin.test.junit4)
+    androidTestImplementation(libs.sqldelight.sqlite.driver)
+    androidTestImplementation(libs.sqldelight.android.driver)
+    androidTestImplementation(libs.android.uitesting.utils)
+    androidTestImplementation(libs.test.parameter.injector)
 }

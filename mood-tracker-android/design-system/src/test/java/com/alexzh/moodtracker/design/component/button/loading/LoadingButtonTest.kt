@@ -44,8 +44,6 @@ class LoadingButtonTest {
         }
     }
 
-
-
     @Test
     fun loadingButton_loadingState(
         @TestParameter isDarkTheme: Boolean,

@@ -79,7 +79,6 @@ fun OutlineTimePicker(
                 imageVector = icon,
                 contentDescription = iconContentDescription,
                 modifier = Modifier.clickable {
-//                    datePickerDialog.show()
                     timePickerDialog.show(
                         (context as FragmentActivity).supportFragmentManager,
                         "Time picker"

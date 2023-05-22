@@ -22,9 +22,9 @@ fun SettingsScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            SmallTopAppBar(
-                modifier = Modifier.background(color = MaterialTheme.colorScheme.inversePrimary),
-                title = { Text(stringResource(R.string.settingsScreen_title)) }
+            TopAppBar(
+                title = { Text(stringResource(R.string.settingsScreen_title)) },
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.inversePrimary)
             )
         }
     ) { paddingValues ->
