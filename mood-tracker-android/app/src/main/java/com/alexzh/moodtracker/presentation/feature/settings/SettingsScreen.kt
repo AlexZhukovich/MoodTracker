@@ -51,7 +51,6 @@ fun ProfileSettingItem(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth()
-            .height(72.dp)
             .clickable { onClick() }
             .padding(8.dp)
     ) {

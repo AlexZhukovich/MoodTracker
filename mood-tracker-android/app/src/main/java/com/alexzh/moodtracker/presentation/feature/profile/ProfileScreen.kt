@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.alexzh.moodtracker.R
+import com.alexzh.moodtracker.design.R as desR
 import com.alexzh.moodtracker.data.remote.model.UserInfoModel
 import kotlinx.coroutines.delay
 
@@ -118,14 +119,14 @@ private fun ErrorScreen(
             modifier = Modifier.fillMaxWidth(),
             onClick = { onCreateAccount() }
         ) {
-            Text("CREATE ACCOUNT SCREEN")
+            Text(stringResource(R.string.profileScreen_createAccount_button))
         }
 
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = { onLogin() }
         ) {
-            Text("LOGIN SCREEN")
+            Text(stringResource(R.string.profileScreen_login_button))
         }
 
         errorMessage?.let {
@@ -156,14 +157,14 @@ private fun UserInfoContainer(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         UserInfoRow(
-            icon = R.drawable.ic_person,
+            icon = desR.drawable.ic_person,
             vale = userInfoModel.username,
-            contentDescription = stringResource(R.string.genericTextField_name_contentDescription)
+            contentDescription = stringResource(desR.string.genericTextField_name_contentDescription)
         )
         UserInfoRow(
-            icon = R.drawable.ic_email,
+            icon = desR.drawable.ic_email,
             vale = userInfoModel.email,
-            contentDescription = stringResource(R.string.genericTextField_email_contentDescription)
+            contentDescription = stringResource(desR.string.genericTextField_email_contentDescription)
         )
     }
 }

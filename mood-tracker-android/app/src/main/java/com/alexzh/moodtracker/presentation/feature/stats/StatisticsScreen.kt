@@ -13,8 +13,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alexzh.moodtracker.R
-import com.alexzh.moodtracker.presentation.component.DateToHappinessChart
-import com.alexzh.moodtracker.presentation.component.Section
+import com.alexzh.moodtracker.design.component.chart.DateToHappinessChart
+import com.alexzh.moodtracker.design.R as desR
+import com.alexzh.moodtracker.design.component.section.Section
+import com.alexzh.moodtracker.presentation.core.calendar.week.defaultHappinessIndicators
 import kotlinx.coroutines.delay
 
 @ExperimentalMaterial3Api
@@ -88,7 +90,8 @@ private fun LoadedSuccessfullyScreen(
         }
     } else {
         DateToHappinessChart(
-            state.dateToHappinessData.items,
+            data = state.dateToHappinessData.items,
+            happinessIndicators = defaultHappinessIndicators,
             modifier = Modifier.fillMaxWidth()
                 .height(200.dp)
                 .padding(8.dp),
@@ -121,8 +124,8 @@ private fun ChartHeader(
         ) {
             Icon(
                 modifier = Modifier.size(24.dp),
-                painter = painterResource(R.drawable.ic_small_arrow_left),
-                contentDescription = stringResource(R.string.statisticsScreen_previousWeek_label),
+                painter = painterResource(desR.drawable.ic_small_arrow_left),
+                contentDescription = stringResource(desR.string.previousWeek_label),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -132,8 +135,8 @@ private fun ChartHeader(
         ) {
             Icon(
                 modifier = Modifier.size(24.dp).padding(),
-                painter = painterResource(R.drawable.ic_nav_today),
-                contentDescription = stringResource(R.string.statisticsScreen_currentWeek_label),
+                painter = painterResource(desR.drawable.ic_nav_today),
+                contentDescription = stringResource(desR.string.currentWeek_label),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -143,8 +146,8 @@ private fun ChartHeader(
         ) {
             Icon(
                 modifier = Modifier.size(24.dp),
-                painter = painterResource(R.drawable.ic_small_arrow_right),
-                contentDescription = stringResource(R.string.statisticsScreen_nextWeek_label),
+                painter = painterResource(desR.drawable.ic_small_arrow_right),
+                contentDescription = stringResource(desR.string.nextWeek_label),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }

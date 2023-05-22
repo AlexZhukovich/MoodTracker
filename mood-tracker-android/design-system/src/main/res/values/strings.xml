@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Generic text fields -->
+    <string name="genericTextField_name_label">Name</string>
+    <string name="genericTextField_name_placeholder">Enter your name</string>
+    <string name="genericTextField_name_contentDescription">Name</string>
+    <string name="genericTextField_email_label">Email</string>
+    <string name="genericTextField_email_placeholder">Enter your email</string>
+    <string name="genericTextField_email_contentDescription">Email</string>
+    <string name="genericTextField_password_label">Password</string>
+    <string name="genericTextField_password_placeholder">Enter your password</string>
+    <string name="genericTextField_password_contentDescription">Password</string>
+
+    <!-- Accessibility -->
+    <string name="passwordField_hidePassword_label">Hide password</string>
+    <string name="passwordField_showPassword_label">Show password</string>
+    <string name="currentWeek_label">Current week</string>
+    <string name="previousWeek_label">Previous week</string>
+    <string name="nextWeek_label">Next week</string>
+</resources>

@@ -31,11 +31,12 @@ import org.koin.androidx.compose.get
 @Composable
 fun AppNavigation(
     navController: NavHostController,
-    isBottomBarDisplayed: MutableState<Boolean>
+    isBottomBarDisplayed: MutableState<Boolean>,
+    startDestination: Screens = Screens.TodayScreen
 ) {
     AnimatedNavHost(
         navController = navController,
-        startDestination = Screens.TodayScreen.route,
+        startDestination = startDestination.route,
         enterTransition = { fadeIn(animationSpec = tween(400)) },
         exitTransition = { fadeOut(animationSpec = tween(400)) }
     ) {

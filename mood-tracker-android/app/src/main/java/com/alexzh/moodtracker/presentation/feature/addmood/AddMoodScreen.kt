@@ -28,8 +28,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.alexzh.moodtracker.R
-import com.alexzh.moodtracker.presentation.component.OutlineDatePicker
-import com.alexzh.moodtracker.presentation.component.OutlineTimePicker
+import com.alexzh.moodtracker.design.component.picker.OutlineDatePicker
+import com.alexzh.moodtracker.design.component.picker.OutlineTimePicker
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -151,7 +151,7 @@ private fun LoadedSuccessfullyScreen(
                             viewModel.onEvent(AddMoodEvent.OnEmotionChange(emotion.emotionId))
                         },
                     painter = painterResource(emotion.iconRes),
-                    contentDescription = null,
+                    contentDescription = stringResource(emotion.contentDescription),
                     tint = if (emotion.emotionId == selectedEmotion?.emotionId) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
