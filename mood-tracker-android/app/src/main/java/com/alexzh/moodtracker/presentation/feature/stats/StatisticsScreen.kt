@@ -16,7 +16,7 @@ import com.alexzh.moodtracker.R
 import com.alexzh.moodtracker.design.component.chart.DateToHappinessChart
 import com.alexzh.moodtracker.design.R as desR
 import com.alexzh.moodtracker.design.component.section.Section
-import com.alexzh.moodtracker.presentation.core.calendar.week.defaultHappinessIndicators
+import com.alexzh.moodtracker.presentation.core.chart.defaultHappinessIndicators
 import kotlinx.coroutines.delay
 
 @ExperimentalMaterial3Api
@@ -27,9 +27,9 @@ fun StatisticsScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            SmallTopAppBar(
-                modifier = Modifier.background(color = MaterialTheme.colorScheme.inversePrimary),
-                title = { Text(stringResource(R.string.statisticsScreen_title)) }
+            TopAppBar(
+                title = { Text(stringResource(R.string.statisticsScreen_title)) },
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.inversePrimary)
             )
         }
     ) { paddingValues ->

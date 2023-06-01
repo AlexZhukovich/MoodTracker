@@ -3,16 +3,15 @@ package com.alexzh.moodtracker.design.component.chart
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.alexzh.moodtracker.design.R
 import com.alexzh.moodtracker.design.common.FontScale
 import com.alexzh.moodtracker.design.theme.AppTheme
+import com.android.ide.common.rendering.api.SessionParams
+import com.google.accompanist.testharness.TestHarness
 import com.google.testing.junit.testparameterinjector.TestParameter
 import com.google.testing.junit.testparameterinjector.TestParameterInjector
 import org.junit.Rule
@@ -21,9 +20,15 @@ import org.junit.runner.RunWith
 import java.time.LocalDate
 
 @RunWith(TestParameterInjector::class)
-class DateToHappinessChartTest {
+class DateToHappinessChartTest(
+    @TestParameter val isDarkTheme: Boolean
+) {
+
     @get:Rule
-    val paparazzi = Paparazzi(deviceConfig = DeviceConfig.PIXEL_5.copy(softButtons = false))
+    val paparazzi = Paparazzi(
+        deviceConfig = DeviceConfig.PIXEL_5.copy(softButtons = false),
+        renderingMode = SessionParams.RenderingMode.SHRINK
+    )
 
     private val testHappinessIndicator = HappinessIndicators(
         angryIconRes = R.drawable.ic_email,
@@ -41,9 +46,7 @@ class DateToHappinessChartTest {
     )
 
     @Test
-    fun dateToHappinessChart_defaultState(
-        @TestParameter isDarkTheme: Boolean
-    ) {
+    fun dateToHappinessChart_defaultState() {
         paparazzi.snapshot {
             AppTheme(darkTheme = isDarkTheme) {
                 Column(
@@ -52,12 +55,7 @@ class DateToHappinessChartTest {
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     FontScale.values().forEach { fontScale ->
-                        CompositionLocalProvider(
-                            LocalDensity provides Density(
-                                density = LocalDensity.current.density,
-                                fontScale = fontScale.value
-                            )
-                        ) {
+                        TestHarness(fontScale = fontScale.value) {
                             DateToHappinessChart(
                                 data = testData,
                                 happinessIndicators = testHappinessIndicator,

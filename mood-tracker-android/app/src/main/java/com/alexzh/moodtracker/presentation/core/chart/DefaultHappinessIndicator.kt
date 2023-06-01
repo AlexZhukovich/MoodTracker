@@ -1,4 +1,4 @@
-package com.alexzh.moodtracker.presentation.core.calendar.week
+package com.alexzh.moodtracker.presentation.core.chart
 
 import com.alexzh.moodtracker.R
 import com.alexzh.moodtracker.design.component.chart.HappinessIndicators
