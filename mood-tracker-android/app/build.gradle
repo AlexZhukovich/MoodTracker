@@ -13,12 +13,12 @@ sqldelight {
 
 android {
     namespace 'com.alexzh.moodtracker'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.alexzh.moodtracker"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -86,12 +86,14 @@ dependencies {
     testImplementation(libs.sqldelight.sqlite.driver)
     testImplementation(libs.truth)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.accompanist.testharness)
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.bundles.androidx.compose.test)
+    androidTestImplementation(libs.accompanist.testharness)
     androidTestImplementation(libs.koin.test)
     androidTestImplementation(libs.koin.test.junit4)
     androidTestImplementation(libs.sqldelight.sqlite.driver)
