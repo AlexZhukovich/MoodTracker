@@ -22,6 +22,18 @@ class EmotionHistoryRepositoryImpl(
         return localDataSource.getDayToAverageHappinessLevel(startDate, endDate)
     }
 
+    override fun getAllEmotionHistory(): Flow<Result<List<EmotionHistory>>> {
+        return flow {
+            emit(Result.Loading())
+
+            emit(
+                Result.Success(
+                    localDataSource.getAllEmotionHistory()
+                )
+            )
+        }
+    }
+
     override fun getEmotionsHistoryByDate(
         startDate: ZonedDateTime,
         endDate: ZonedDateTime

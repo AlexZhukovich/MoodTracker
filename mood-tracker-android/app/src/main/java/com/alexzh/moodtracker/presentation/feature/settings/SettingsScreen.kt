@@ -1,23 +1,26 @@
 package com.alexzh.moodtracker.presentation.feature.settings
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.alexzh.moodtracker.R
+import com.alexzh.moodtracker.design.component.settings.SettingsItem
 
 @ExperimentalMaterial3Api
 @Composable
 fun SettingsScreen(
-    onProfile: () -> Unit
+    onImportAndExport: () -> Unit,
+    onProfile: () -> Unit,
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -26,9 +29,10 @@ fun SettingsScreen(
                 title = { Text(stringResource(R.string.settingsScreen_title)) },
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.inversePrimary)
             )
-        }
+        },
     ) { paddingValues ->
-        Column(modifier = Modifier.fillMaxSize()
+        Column(modifier = Modifier
+            .fillMaxSize()
             .padding(
                 start = 0.dp,
                 top = paddingValues.calculateTopPadding(),
@@ -36,44 +40,19 @@ fun SettingsScreen(
                 bottom = paddingValues.calculateBottomPadding()
             )
         ) {
-            ProfileSettingItem(onClick = { onProfile() })
-            Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f))
-        }
-    }
-}
-
-@Composable
-fun ProfileSettingItem(
-    @StringRes title: Int = R.string.settingsScreen_profile_title,
-    @StringRes subtitle: Int = R.string.settingsScreen_profile_subtitle,
-    @DrawableRes icon: Int = R.drawable.ic_settings_account,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth()
-            .clickable { onClick() }
-            .padding(8.dp)
-    ) {
-        Icon(
-            modifier = Modifier.size(36.dp).align(Alignment.CenterVertically),
-            painter = painterResource(icon),
-            contentDescription = stringResource(R.string.settingsScreen_profile_contentDescription),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Column(
-            modifier = Modifier.fillMaxWidth()
-                .weight(1f)
-                .padding(start = 8.dp, top = 4.dp, bottom = 4.dp)
-        ) {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(title)
+            SettingsItem(
+                title = R.string.settingsScreen_importAndExport_title,
+                subtitle = R.string.settingsScreen_importAndExport_subtitle,
+                icon = R.drawable.ic_import_and_export,
+                contentDescription = R.string.settingsScreen_importAndExport_contentDescription,
+                onClick = onImportAndExport
             )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(subtitle),
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            SettingsItem(
+                title = R.string.settingsScreen_profile_title,
+                subtitle = R.string.settingsScreen_profile_subtitle,
+                icon = R.drawable.ic_settings_account,
+                contentDescription = R.string.settingsScreen_profile_contentDescription,
+                onClick = { onProfile() }
             )
         }
     }

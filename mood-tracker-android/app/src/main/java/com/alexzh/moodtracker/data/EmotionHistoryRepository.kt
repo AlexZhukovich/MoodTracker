@@ -15,6 +15,8 @@ interface EmotionHistoryRepository {
         endDate: ZonedDateTime
     ): List<DayToHappinessLevel>
 
+    fun getAllEmotionHistory(): Flow<Result<List<EmotionHistory>>>
+
     fun getEmotionsHistoryByDate(
         startDate: ZonedDateTime,
         endDate: ZonedDateTime

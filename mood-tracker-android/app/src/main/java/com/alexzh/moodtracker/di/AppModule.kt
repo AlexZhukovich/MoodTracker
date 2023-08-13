@@ -19,12 +19,14 @@ import com.alexzh.moodtracker.presentation.feature.addmood.AddMoodViewModel
 import com.alexzh.moodtracker.presentation.feature.auth.createaccount.CreateAccountViewModel
 import com.alexzh.moodtracker.presentation.feature.auth.login.LoginViewModel
 import com.alexzh.moodtracker.presentation.feature.profile.ProfileViewModel
+import com.alexzh.moodtracker.presentation.feature.settings.backup.SettingsImportAndExportViewModel
 import com.alexzh.moodtracker.presentation.feature.stats.StatisticsViewModel
 import com.alexzh.moodtracker.presentation.feature.today.TodayViewModel
 import com.alexzh.moodtrackerdb.EmotionHistoryEntity
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 import kotlinx.coroutines.Dispatchers
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -71,6 +73,14 @@ val dataModule = module {
     }
     factory<AuthRepository> { AuthRepositoryImpl(remoteService = get(), sessionManager = get()) }
     factory<UserRepository> { UserRepositoryImpl(remoteService = get()) }
+
+    factory<DataManagerRepository> {
+        DataManagerRepositoryImpl(
+            localEmotionHistoryDataSource = get(),
+            emotionHistoryRepository = get(),
+            application = androidApplication()
+        )
+    }
 }
 
 val appModule = module {
@@ -121,6 +131,13 @@ val appModule = module {
     viewModel {
         LoginViewModel(
             get()
+        )
+    }
+
+    viewModel {
+        SettingsImportAndExportViewModel(
+            dataManagerRepository = get(),
+            application = androidApplication()
         )
     }
 }
