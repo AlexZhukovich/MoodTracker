@@ -17,6 +17,7 @@ import com.alexzh.moodtracker.presentation.feature.addmood.AddMoodScreen
 import com.alexzh.moodtracker.presentation.feature.auth.createaccount.CreateAccountScreen
 import com.alexzh.moodtracker.presentation.feature.auth.login.LoginScreen
 import com.alexzh.moodtracker.presentation.feature.profile.ProfileScreen
+import com.alexzh.moodtracker.presentation.feature.settings.backup.SettingsImportAndExportScreen
 import com.alexzh.moodtracker.presentation.feature.settings.SettingsScreen
 import com.alexzh.moodtracker.presentation.feature.stats.StatisticsScreen
 import com.alexzh.moodtracker.presentation.feature.today.TodayScreen
@@ -85,7 +86,18 @@ fun AppNavigation(
                 isBottomBarDisplayed.value = true
             }
             SettingsScreen(
-                onProfile = { navController.navigate(Screens.ProfileScreen.route) }
+                onImportAndExport = { navController.navigate(Screens.SettingsImportAndExportScreen.route) },
+                onProfile = { navController.navigate(Screens.ProfileScreen.route) },
+            )
+        }
+
+        composable(route = Screens.SettingsImportAndExportScreen.route) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = false
+            }
+            SettingsImportAndExportScreen(
+                viewModel = get(),
+                onBack = { navController.navigateUp() }
             )
         }
 

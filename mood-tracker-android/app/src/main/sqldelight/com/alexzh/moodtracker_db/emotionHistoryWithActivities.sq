@@ -15,7 +15,7 @@ JOIN activityEntity ON emotionHistoryToActivityEntity.activityId = activityEntit
 GROUP BY emotionHistoryEntity.id
 ORDER BY emotionHistoryEntity.date ASC;
 
-getEmotionHistoryWithActivities:
+getAllEmotionHistoryWithActivities:
 SELECT *
 FROM emotionHistoryWithActivities;
 

@@ -13,6 +13,8 @@ interface LocalEmotionHistoryDataSource {
         endDate: ZonedDateTime
     ): List<DayToHappinessLevel>
 
+    suspend fun getAllEmotionHistory(): List<EmotionHistory>
+
     suspend fun getEmotionsHistoryByDate(
         startDate: ZonedDateTime,
         endDate: ZonedDateTime

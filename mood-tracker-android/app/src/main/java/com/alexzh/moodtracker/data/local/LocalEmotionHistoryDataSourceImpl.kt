@@ -33,6 +33,40 @@ class LocalEmotionHistoryDataSourceImpl(
         }
     }
 
+    override suspend fun getAllEmotionHistory(): List<EmotionHistory> {
+        return withContext(dispatcher) {
+            val localEmotionHistoryWithActivity = emotionHistoryWithActivitiesQueries
+                .getAllEmotionHistoryWithActivities()
+                .executeAsList()
+            val activities = activitiesQueries
+                .getActivities()
+                .executeAsList()
+
+            localEmotionHistoryWithActivity.map { emotionHistoryWithActivity ->
+                EmotionHistory(
+                    id = emotionHistoryWithActivity.id,
+                    date = emotionHistoryWithActivity.date,
+                    emotion = Emotion(
+                        id = emotionHistoryWithActivity.emotionId,
+                        name = emotionHistoryWithActivity.emotionName,
+                        happinessLevel = emotionHistoryWithActivity.emotionHappinessLevel,
+                        icon = emotionHistoryWithActivity.emotionIcon
+                    ),
+                    activities = emotionHistoryWithActivity.activityIds.split(",")
+                        .map { activityId ->
+                            val activity = activities.first { it.id == activityId.toLong() }
+                            Activity(
+                                id = activity.id,
+                                name = activity.name,
+                                icon = activity.icon
+                            )
+                        },
+                    note = emotionHistoryWithActivity.note
+                )
+            }
+        }
+    }
+
     override suspend fun getEmotionsHistoryByDate(
         startDate: ZonedDateTime,
         endDate: ZonedDateTime

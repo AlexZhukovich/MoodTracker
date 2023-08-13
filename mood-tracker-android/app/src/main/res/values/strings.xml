@@ -45,6 +45,20 @@
     <string name="settingsScreen_profile_title">Profile</string>
     <string name="settingsScreen_profile_subtitle">See more information about profile</string>
     <string name="settingsScreen_profile_contentDescription">Profile</string>
+    <string name="settingsScreen_importAndExport_title">Import &amp; Export</string>
+    <string name="settingsScreen_importAndExport_subtitle">Import backups. Create manual exports of your data.</string>
+    <string name="settingsScreen_importAndExport_contentDescription">Import and Export</string>
+    <string name="settingsImportAndExportScreen_title">Import &amp; Export</string>
+    <string name="settingsImportAndExportScreen_export_title">Export</string>
+    <string name="settingsImportAndExportScreen_noDataToExport_message">There is no data to export</string>
+    <string name="settingsImportAndExportScreen_noDataToImport_message">There is no data to import</string>
+    <string name="settingsImportAndExportScreen_export_subtitle">Export user data</string>
+    <string name="settingsImportAndExportScreen_export_contentDescription">Export data</string>
+    <string name="settingsImportAndExportScreen_export_dataSuccessfullyExported_message">Data has been exported</string>
+    <string name="settingsImportAndExportScreen_import_title">Import</string>
+    <string name="settingsImportAndExportScreen_import_subtitle">Import user data from file</string>
+    <string name="settingsImportAndExportScreen_import_contentDescription">Import data</string>
+    <string name="settingsImportAndExportScreen_import_dataSuccessfullyImported_message">Data has been imported</string>
 
     <!-- Create Account -->
     <string name="createAccountScreen_title">Create Account</string>
