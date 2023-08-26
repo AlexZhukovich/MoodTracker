@@ -13,12 +13,12 @@ sqldelight {
 
 android {
     namespace 'com.alexzh.moodtracker'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.alexzh.moodtracker"
         minSdk 23
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -62,10 +62,10 @@ dependencies {
     implementation libs.androidx.core.ktx
     implementation(libs.androidx.preference)
     implementation(libs.androidx.security.crypto)
+    implementation(libs.androidx.navigation.compose)
     implementation libs.google.android.material
     implementation(composeBom)
     implementation libs.bundles.androidx.compose.ui
-    implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.koin.android)
