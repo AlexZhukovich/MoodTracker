@@ -9,6 +9,7 @@ private const val FULL_TODAY_SCREEN_ROUTE = "todayScreen"
 private const val FULL_ADD_MOOD_SCREEN_ROUTE = "${Screens.AddMoodScreen.prefix}/{${Screens.AddMoodScreen.paramName}}"
 private const val FULL_STATISTICS_SCREEN_ROUTE = "statisticsScreen"
 private const val FULL_SETTINGS_SCREEN_ROUTE = "settingsScreen"
+private const val FULL_SETTINGS_REMINDERS_SCREEN_ROUTE = "settingsRemindersScreen"
 private const val FULL_SETTINGS_IMPORT_AND_EXPORT_SCREEN_ROUTE = "settingsImportAndExportScreen"
 private const val FULL_PROFILE_SCREEN_ROUTE = "profileScreen"
 private const val FULL_CREATE_ACCOUNT_SCREEN_ROUTE = "createAccountScreen"
@@ -48,6 +49,8 @@ sealed class Screens(val route: String) {
             )
         }
     }
+
+    object SettingsRemindersScreen : Screens(FULL_SETTINGS_REMINDERS_SCREEN_ROUTE)
 
     object SettingsImportAndExportScreen : Screens(FULL_SETTINGS_IMPORT_AND_EXPORT_SCREEN_ROUTE)
 

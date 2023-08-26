@@ -19,6 +19,7 @@ import com.alexzh.moodtracker.design.component.settings.SettingsItem
 @ExperimentalMaterial3Api
 @Composable
 fun SettingsScreen(
+    onReminders: () -> Unit,
     onImportAndExport: () -> Unit,
     onProfile: () -> Unit,
 ) {
@@ -40,6 +41,13 @@ fun SettingsScreen(
                 bottom = paddingValues.calculateBottomPadding()
             )
         ) {
+            SettingsItem(
+                title = R.string.settingsScreen_reminders_title,
+                subtitle = R.string.settingsScreen_reminders_subtitle,
+                icon = R.drawable.ic_settings_reminders,
+                contentDescription = R.string.settingsScreen_reminders_contentDescription,
+                onClick = onReminders
+            )
             SettingsItem(
                 title = R.string.settingsScreen_importAndExport_title,
                 subtitle = R.string.settingsScreen_importAndExport_subtitle,

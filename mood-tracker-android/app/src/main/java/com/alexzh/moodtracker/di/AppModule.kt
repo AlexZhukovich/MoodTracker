@@ -24,6 +24,7 @@ import com.alexzh.moodtracker.presentation.feature.auth.createaccount.CreateAcco
 import com.alexzh.moodtracker.presentation.feature.auth.login.LoginViewModel
 import com.alexzh.moodtracker.presentation.feature.profile.ProfileViewModel
 import com.alexzh.moodtracker.presentation.feature.settings.backup.SettingsImportAndExportViewModel
+import com.alexzh.moodtracker.presentation.feature.settings.reminders.SettingsRemindersViewModel
 import com.alexzh.moodtracker.presentation.feature.stats.StatisticsViewModel
 import com.alexzh.moodtracker.presentation.feature.today.TodayViewModel
 import com.alexzh.moodtrackerdb.EmotionHistoryEntity
@@ -159,6 +160,12 @@ val appModule = module {
         SettingsImportAndExportViewModel(
             dataManagerRepository = get(),
             application = androidApplication()
+        )
+    }
+
+    viewModel {
+        SettingsRemindersViewModel(
+            reminderRepository = get()
         )
     }
 }

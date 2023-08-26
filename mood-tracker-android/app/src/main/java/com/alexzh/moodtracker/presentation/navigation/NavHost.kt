@@ -87,8 +87,19 @@ fun AppNavigation(
                 isBottomBarDisplayed.value = true
             }
             SettingsScreen(
+                onReminders = { navController.navigate(Screens.SettingsRemindersScreen.route) },
                 onImportAndExport = { navController.navigate(Screens.SettingsImportAndExportScreen.route) },
                 onProfile = { navController.navigate(Screens.ProfileScreen.route) },
+            )
+        }
+
+        composable(route = Screens.SettingsRemindersScreen.route) {
+            LaunchedEffect(Unit) {
+                isBottomBarDisplayed.value = false
+            }
+            SettingsRemindersScreen(
+                viewModel = get(),
+                onBack = { navController.navigateUp() }
             )
         }
 

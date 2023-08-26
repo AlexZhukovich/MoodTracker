@@ -48,6 +48,9 @@
     <string name="settingsScreen_importAndExport_title">Import &amp; Export</string>
     <string name="settingsScreen_importAndExport_subtitle">Import backups. Create manual exports of your data.</string>
     <string name="settingsScreen_importAndExport_contentDescription">Import and Export</string>
+    <string name="settingsScreen_reminders_title">Reminders</string>
+    <string name="settingsScreen_reminders_subtitle">Manager the schedule of reminders.</string>
+    <string name="settingsScreen_reminders_contentDescription">Reminders</string>
     <string name="settingsImportAndExportScreen_title">Import &amp; Export</string>
     <string name="settingsImportAndExportScreen_export_title">Export</string>
     <string name="settingsImportAndExportScreen_noDataToExport_message">There is no data to export</string>
@@ -59,6 +62,15 @@
     <string name="settingsImportAndExportScreen_import_subtitle">Import user data from file</string>
     <string name="settingsImportAndExportScreen_import_contentDescription">Import data</string>
     <string name="settingsImportAndExportScreen_import_dataSuccessfullyImported_message">Data has been imported</string>
+    <string name="settingsRemindersScreen_title">Reminders</string>
+    <string name="settingsRemindersScreen_add_label">Add</string>
+    <string name="settingsRemindersScreen_expandReminder_contentDescription">Expand %1$s reminder</string>
+    <string name="settingsRemindersScreen_collapseReminder_contentDescription">Collapse %1$s reminder</string>
+    <string name="settingsRemindersScreen_deleteReminder_label">Delete</string>
+    <string name="settingsRemindersScreen_deleteReminder_contentDescription">Delete %1$s reminder</string>
+    <string name="settingsRemindersScreen_myRemindersSection_label">My Reminders</string>
+    <string name="settingsRemindersScreen_addReminderDialog_title">Add a reminder</string>
+    <string name="settingsRemindersScreen_deleteReminderDialog_title">Do you want to delete the reminder?</string>
 
     <!-- Create Account -->
     <string name="createAccountScreen_title">Create Account</string>
