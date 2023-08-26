@@ -4,6 +4,10 @@ import com.alexzh.moodtracker.MoodTrackerDatabase
 import com.alexzh.moodtracker.data.*
 import com.alexzh.moodtracker.data.local.LocalEmotionHistoryDataSource
 import com.alexzh.moodtracker.data.local.LocalEmotionHistoryDataSourceImpl
+import com.alexzh.moodtracker.data.local.LocalRemindersDataSource
+import com.alexzh.moodtracker.data.local.LocalRemindersDataSourceImpl
+import com.alexzh.moodtracker.data.local.adapter.listOfDayOfWeekAdapter
+import com.alexzh.moodtracker.data.local.adapter.localTimeAdapter
 import com.alexzh.moodtracker.data.local.adapter.zonedDateTimeAdapter
 import com.alexzh.moodtracker.data.local.session.AuthSharedPreferenceFactory
 import com.alexzh.moodtracker.data.local.session.SessionManager
@@ -23,6 +27,7 @@ import com.alexzh.moodtracker.presentation.feature.settings.backup.SettingsImpor
 import com.alexzh.moodtracker.presentation.feature.stats.StatisticsViewModel
 import com.alexzh.moodtracker.presentation.feature.today.TodayViewModel
 import com.alexzh.moodtrackerdb.EmotionHistoryEntity
+import com.alexzh.moodtrackerdb.ReminderEntity
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +52,10 @@ val dataModule = module {
             driver = get(),
             emotionHistoryEntityAdapter = EmotionHistoryEntity.Adapter(
                 dateAdapter = zonedDateTimeAdapter
+            ),
+            reminderEntityAdapter = ReminderEntity.Adapter(
+                timeAdapter = localTimeAdapter,
+                repeatDaysAdapter = listOfDayOfWeekAdapter
             )
         )
     }
@@ -54,11 +63,23 @@ val dataModule = module {
 
     factory<LocalEmotionHistoryDataSource> {
         LocalEmotionHistoryDataSourceImpl(
-            get(),
-            get(named("dbDispatcher"))
+            db = get(),
+            dispatcher = get(named("dbDispatcher"))
         )
     }
     factory<EmotionHistoryRepository> { EmotionHistoryRepositoryImpl(get()) }
+
+    factory<LocalRemindersDataSource> {
+        LocalRemindersDataSourceImpl(
+            db = get(),
+            dispatcher = get(named("dbDispatcher"))
+        )
+    }
+    factory<ReminderRepository> {
+        ReminderRepositoryImpl(
+            localDataSource = get()
+        )
+    }
 
     single { AuthInterceptor(sessionManager = get()) }
     factory { UserRemoteServiceFactory().createMoodTrackerRemoteService(true, get()) }

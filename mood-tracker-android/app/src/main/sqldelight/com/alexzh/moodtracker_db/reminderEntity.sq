@@ -1,0 +1,33 @@
+import java.lang.Boolean;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import kotlin.Int;
+import kotlin.collections.List;
+
+CREATE TABLE reminderEntity(
+    id INTEGER NOT NULL PRIMARY KEY,
+    time INTEGER AS LocalTime NOT NULL,
+    repeatDays TEXT AS List<DayOfWeek> NOT NULL,
+    isEnabled INTEGER AS Boolean NOT NULL DEFAULT 0
+);
+
+getReminders:
+SELECT *
+FROM reminderEntity;
+
+getReminder:
+SELECT *
+FROM reminderEntity
+WHERE id = :id;
+
+insert:
+INSERT OR REPLACE
+INTO reminderEntity
+VALUES (?, ?, ?, ?);
+
+delete:
+DELETE FROM reminderEntity
+WHERE id = :id;
+
+lastInsertRowId:
+SELECT last_insert_rowid();
