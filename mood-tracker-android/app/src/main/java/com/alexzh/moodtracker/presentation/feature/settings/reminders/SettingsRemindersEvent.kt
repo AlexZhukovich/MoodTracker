@@ -4,6 +4,8 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 
 sealed class SettingsRemindersEvent {
+    data object NotificationPermissionsDenied: SettingsRemindersEvent()
+    data object NotificationPermissionsGrated: SettingsRemindersEvent()
     data object ShowAddReminderDialog: SettingsRemindersEvent()
     data object HideAddReminderDialog: SettingsRemindersEvent()
     data class AddReminder(val time: LocalTime): SettingsRemindersEvent()

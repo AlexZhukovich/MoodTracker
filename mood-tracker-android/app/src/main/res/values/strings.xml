@@ -109,4 +109,7 @@
     <string name="genericError_unauthorizedUser_label">Please log in, again.</string>
     <string name="genericError_somethingWentWrong_label">Something went wrong</string>
 
+    <!-- Permissions -->
+    <string name="notificationPermissionExplanation_label">The notification permission required for receiving notifications. Please grant the permission.</string>
+    <string name="grantPermission_label">Grant</string>
 </resources>

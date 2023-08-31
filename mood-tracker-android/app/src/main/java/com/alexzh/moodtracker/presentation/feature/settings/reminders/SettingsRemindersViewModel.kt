@@ -33,6 +33,8 @@ class SettingsRemindersViewModel(
 
     fun onEvent(event: SettingsRemindersEvent) {
         when (event) {
+            is SettingsRemindersEvent.NotificationPermissionsGrated -> onNotificationPermissionGranted()
+            is SettingsRemindersEvent.NotificationPermissionsDenied -> onNotificationPermissionDenied()
             is SettingsRemindersEvent.ShowAddReminderDialog -> onShowAddReminderDialog()
             is SettingsRemindersEvent.HideAddReminderDialog -> onHideAddReminderDialog()
             is SettingsRemindersEvent.AddReminder -> onAddReminder(event.time)
@@ -43,6 +45,14 @@ class SettingsRemindersViewModel(
             is SettingsRemindersEvent.OnExpandCollapse -> onExpandCollapse(event.reminderInfo)
             is SettingsRemindersEvent.OnEnabledDisabled -> onEnabledDisabled(event.reminderInfo)
         }
+    }
+
+    private fun onNotificationPermissionGranted() {
+        _uiState.value = _uiState.value.copy(permissionIsGranted = true)
+    }
+
+    private fun onNotificationPermissionDenied() {
+        _uiState.value = _uiState.value.copy(permissionIsGranted = false)
     }
 
     private fun onShowAddReminderDialog() {

@@ -1,8 +1,12 @@
 package com.alexzh.moodtracker.presentation.feature.settings.reminders
 
+import android.Manifest
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -22,21 +27,41 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.alexzh.moodtracker.R
 import com.alexzh.moodtracker.design.component.ReminderDetailsItem
+import com.alexzh.moodtracker.presentation.core.intent.createOpenNotificationSettingsIntent
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import java.time.DayOfWeek
 import java.time.LocalTime
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun SettingsRemindersScreen(
     viewModel: SettingsRemindersViewModel,
     onBack: () -> Unit
 ) {
     val uiState = viewModel.uiState.value
+    val context = LocalContext.current
+    val permissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
+    } else {
+        null
+    }
+
+    if (permissionState?.status?.isGranted == true) {
+        viewModel.onEvent(SettingsRemindersEvent.NotificationPermissionsGrated)
+    } else {
+        viewModel.onEvent(SettingsRemindersEvent.NotificationPermissionsDenied)
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -67,19 +92,25 @@ fun SettingsRemindersScreen(
             )
         }
     ) { paddingValues ->
-        when {
-            uiState.reminders.isNotEmpty() ->
-                SuccessScreen(
-                    paddingValues = paddingValues,
-                    reminders = uiState.reminders,
-                    onExpand = { viewModel.onEvent(SettingsRemindersEvent.OnExpandCollapse(it)) },
-                    onEnabled = { viewModel.onEvent(SettingsRemindersEvent.OnEnabledDisabled(it)) },
-                    onRepeatDayChange = { reminderInfoUi, dayOfWeek ->
-                        viewModel.onEvent(SettingsRemindersEvent.OnRepeatDaysChange(reminderInfoUi, dayOfWeek))
-                    },
-                    onDelete = { viewModel.onEvent(SettingsRemindersEvent.ShowDeleteReminderDialog(it)) }
-                )
-        }
+
+        SuccessScreen(
+            paddingValues = paddingValues,
+            reminders = uiState.reminders,
+            permissionsIsDenied = !uiState.permissionIsGranted,
+            onExpand = { viewModel.onEvent(SettingsRemindersEvent.OnExpandCollapse(it)) },
+            onEnabled = { viewModel.onEvent(SettingsRemindersEvent.OnEnabledDisabled(it)) },
+            onRepeatDayChange = { reminderInfoUi, dayOfWeek ->
+                viewModel.onEvent(SettingsRemindersEvent.OnRepeatDaysChange(reminderInfoUi, dayOfWeek))
+            },
+            onGrantPermission = {
+                if (permissionState?.status?.shouldShowRationale == true) {
+                    context.startActivity(createOpenNotificationSettingsIntent(context))
+                } else {
+                    permissionState?.launchPermissionRequest()
+                }
+            },
+            onDelete = { viewModel.onEvent(SettingsRemindersEvent.ShowDeleteReminderDialog(it)) }
+        )
 
         if (uiState.showAddReminderDialog) {
             AddReminderDialog(
@@ -103,10 +134,12 @@ fun SettingsRemindersScreen(
 private fun SuccessScreen(
     paddingValues: PaddingValues,
     reminders: List<ReminderInfoUi>,
+    permissionsIsDenied: Boolean,
     onExpand: (ReminderInfoUi) -> Unit,
     onEnabled: (ReminderInfoUi) -> Unit,
     onRepeatDayChange: (ReminderInfoUi, DayOfWeek) -> Unit,
     onDelete: (ReminderInfoUi) -> Unit,
+    onGrantPermission: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -116,6 +149,13 @@ private fun SuccessScreen(
                 bottom = paddingValues.calculateBottomPadding() + 8.dp
             )
     ) {
+        if (permissionsIsDenied) {
+            item {
+                WarningDeniedNotificationPermissions(
+                    onGrantPermission = onGrantPermission
+                )
+            }
+        }
         items(reminders) { reminderInfoUi ->
             ReminderDetailsItem(
                 time = reminderInfoUi.formattedTime,
@@ -132,6 +172,37 @@ private fun SuccessScreen(
                 onExpand = { onExpand(reminderInfoUi) },
                 onDelete = { onDelete(reminderInfoUi) }
             )
+        }
+    }
+}
+
+@Composable
+private fun WarningDeniedNotificationPermissions(
+    onGrantPermission: () -> Unit
+) {
+    ElevatedCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+        shape = MaterialTheme.shapes.medium
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.weight(1.0f),
+                text = stringResource(R.string.notificationPermissionExplanation_label),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            TextButton(
+                onClick = { onGrantPermission() }
+            ) {
+                Text(
+                    text = stringResource(R.string.grantPermission_label).uppercase(),
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }
